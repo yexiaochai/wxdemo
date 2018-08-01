@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "ui-loading": "/components/ui-loading",
-    "ui-toast": "/components/ui-toast"
-  }
-}

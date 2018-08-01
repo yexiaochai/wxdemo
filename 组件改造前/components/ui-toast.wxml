@@ -1,4 +1,0 @@
-<ui-mask z-index="{{maskzIndex}}" is-show="{{isShow}}" bindmaskevent="onMaskEvent"></ui-mask>
-<section class="cm-modal cm-modal--toast" style="z-index: {{uiIndex}}; display: {{isShow}}; ">
-  {{message}}
-</section>

@@ -40,7 +40,6 @@ class UIUtil {
       toastMessage: this.toastMessage
     });
   }
-  //关闭loading
   hideToast(page, message) {
     this.isToastShow = 'none';
     page.setData({

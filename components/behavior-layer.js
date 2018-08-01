@@ -1,3 +1,4 @@
+//behavior-layer
 const util = require('../utils/util.js')
 module.exports = Behavior({
   properties: {
