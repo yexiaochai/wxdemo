@@ -1,8 +1,5 @@
 <import src="./mod.searchbox.wxml" />
-
 <view>
   <template is="searchbox" />
 </view>
-
-
 <include src="../../utils/abstract-page.wxml"/>
