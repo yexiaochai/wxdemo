@@ -1,0 +1,5 @@
+<section class="cm-modal cm-modal--toast" style="z-index: {{uiIndex}}; display: {{isShow}}; ">
+  {{message}}
+</section>
+<view class="cm-overlay" bindtap="onMaskEvent" style="z-index: {{maskzIndex}}; display: {{isShow}}" >
+</view>
