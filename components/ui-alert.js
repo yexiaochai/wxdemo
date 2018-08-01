@@ -5,6 +5,12 @@ Component({
     LayerView
   ],
   properties: {
+    btns: {
+      type: Array
+    },
+    title: {
+      type: String
+    },
     message: {
       type: String
     }
@@ -17,5 +23,8 @@ Component({
     //console.log(this)
   },
   methods: {
+    onBtnEvent: function (e) {
+      this.triggerEvent('onBtnTap', e, {})
+    }
   }
 })

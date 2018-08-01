@@ -10,10 +10,26 @@ Page(_page.initPage({
   methods: {
   },
   onShow: function () {
-     global.sss = this;
-     let scope = this;
-    this.showToast('我是美丽可爱的toast', function () { console.log('执行回调')} );
-     
+    global.sss = this;
+    let scope = this;
+    this.showMessage({
+      message: '我是一个确定框',
+      ok: {
+        name: '确定',
+        callback: function () {
+          scope.hideMessage();
+          scope.showMessage('我选择了确定');
+        }
+      },
+      cancel: {
+        name: '取消',
+        callback: function () {
+          scope.hideMessage();
+          scope.showToast('我选择了取消');
+        }
+      }
+    });
+
   },
   onLoad: function () {
     // this.setPageMethods();

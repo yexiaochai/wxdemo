@@ -3,15 +3,42 @@ class Page {
     //用于基础page存储各种默认ui属性
     this.isLoadingShow = 'none';
     this.isToastShow = 'none';
+    this.isMessageShow = 'none';
+
     this.toastMessage = 'toast提示';
+
+    this.alertTitle = '';
+    this.alertMessage = 'alertMessage';
+    this.alertBtn = [
+    ];
 
     //通用方法列表配置，暂时约定用于点击
     this.methodSet = [
-      'onToastHide', 'showToast', 'hideToast', 'showLoading', 'hideLoading'
+      'onToastHide',
+      'showToast',
+      'hideToast',
+      'showLoading',
+      'hideLoading',
+      'onAlertBtnTap',
+        'showMessage',
+        'hideMessage'
     ];
 
     //当前page对象
     this.page = null;
+  }
+  //产出页面组件需要的参数
+  getPageData() {
+    return {
+      isMessageShow: this.isMessageShow,
+      alertTitle: this.alertTitle,
+      alertMessage: this.alertMessage,
+      alertBtn: this.alertBtn,
+      
+      isLoadingShow: this.isLoadingShow,
+      isToastShow: this.isToastShow,
+      toastMessage: this.toastMessage
+    }
   }
   initPage(pageData) {
     //debugger;
@@ -28,6 +55,48 @@ class Page {
     console.log(_pageData);
     return _pageData;
   }
+  onAlertBtnTap(e) {
+    let type = e.detail.target.dataset.type;
+    if(type === 'default') {
+      this.hideMessage();
+    } else if(type === 'ok') {
+      if(this.alertOkCallback) this.alertOkCallback.call(this);
+    } else if(type == 'cancel'){
+      if(this.alertCancelCallback) this.alertCancelCallback.call(this);
+    }
+  }
+  showMessage(msg) {
+    let alertBtn = [{
+      type: 'default',
+      name: '知道了'
+    }];
+    let message = msg;
+    this.alertOkCallback = null;
+    this.alertCancelCallback = null;
+
+    if(typeof msg === 'object') {
+      message = msg.message;
+      alertBtn = [];
+      msg.cancel.type = 'cancel';
+      msg.ok.type = 'ok';
+
+      alertBtn.push(msg.cancel);
+      alertBtn.push(msg.ok);
+      this.alertOkCallback = msg.ok.callback;
+      this.alertCancelCallback = msg.cancel.callback;
+    }
+
+    this.setData({
+      alertBtn:alertBtn,
+      isMessageShow: '',
+      alertMessage: message
+    });
+  }
+  hideMessage() {
+    this.setData({
+      isMessageShow: 'none',
+    });
+  }
   //当关闭toast时触发的事件
   onToastHide(e) {
     this.hideToast();
@@ -40,34 +109,27 @@ class Page {
     }
     return funcs;
   }
-  //产出页面组件需要的参数
-  getPageData() {
-    return {
-      isLoadingShow: this.isLoadingShow,
-      isToastShow: this.isToastShow,
-      toastMessage: this.toastMessage
-    }
-  }
-  showToast(message, callback) {
-    this.toastHideCallback = null;
-    if (callback) this.toastHideCallback = callback;
-    let scope = this;
-    this.setData({
-      isToastShow: '',
-      toastMessage: message
-    });
+  
+showToast(message, callback) {
+  this.toastHideCallback = null;
+  if (callback) this.toastHideCallback = callback;
+  let scope = this;
+  this.setData({
+    isToastShow: '',
+    toastMessage: message
+  });
 
-    // 3秒后关闭loading
-    setTimeout(function () {
-      scope.hideToast();
-    }, 3000);
-  }
-  hideToast() {
-    this.setData({
-      isToastShow: 'none'
-    });
-    if (this.toastHideCallback) this.toastHideCallback.call(this);
-  }
+  // 3秒后关闭loading
+  setTimeout(function () {
+    scope.hideToast();
+  }, 3000);
+}
+hideToast() {
+  this.setData({
+    isToastShow: 'none'
+  });
+  if (this.toastHideCallback) this.toastHideCallback.call(this);
+}
   //需要传入page实例
   showLoading() {
     this.setData({

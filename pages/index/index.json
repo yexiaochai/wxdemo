@@ -1,6 +1,7 @@
 {
   "usingComponents": {
     "ui-loading": "/components/ui-loading",
+    "ui-alert": "/components/ui-alert",
     "ui-toast": "/components/ui-toast"
   }
 }
