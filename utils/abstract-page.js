@@ -48,7 +48,9 @@ class Page {
       toastMessage: this.toastMessage
     }
   }
-  showToast(message) {
+  showToast(message, callback) {
+    this.toastHideCallback = null;
+    if (callback) this.toastHideCallback = callback;
     let scope = this;
     this.setData({
       isToastShow: '',
@@ -64,6 +66,7 @@ class Page {
     this.setData({
       isToastShow: 'none'
     });
+    if (this.toastHideCallback) this.toastHideCallback.call(this);
   }
   //需要传入page实例
   showLoading() {

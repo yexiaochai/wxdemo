@@ -12,7 +12,7 @@ Page(_page.initPage({
   onShow: function () {
      global.sss = this;
      let scope = this;
-     this.showToast('我是美丽可爱的toast');
+    this.showToast('我是美丽可爱的toast', function () { console.log('执行回调')} );
      
   },
   onLoad: function () {
