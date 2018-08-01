@@ -1,0 +1,2 @@
+<ui-toast bindonToastHide="onToastHide" is-show="{{isToastShow}}" message="{{toastMessage}}"></ui-toast>
+

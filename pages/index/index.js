@@ -1,22 +1,26 @@
 //获取公共ui操作类实例
-const uiUtil = require('../../utils/ui-util.js');
+const _page = require('../../utils/abstract-page.js');
 //获取应用实例
 const app = getApp()
-Page({
-  data: uiUtil.getPageData(),
+
+
+Page(_page.initPage({
+  data: {
+    ttt: 'ttt'
+
+  },
   // methods: uiUtil.getPageMethods(),
   methods: {
   },
-  onShow: function() {
-    let scope= this;
-    uiUtil.showToast(this, '我是美丽可爱的toast');
-    //3秒后关闭loading
-    // setTimeout(function () {
-    //   uiUtil.hideToast(scope);
-    // }, 3000);
+  onShow: function () {
+     let scope = this;
+     this.showToast('我是美丽可爱的toast');
+     // 3秒后关闭loading
+    //  setTimeout(function () {
+    //    scope.hideToast();
+    //  }, 3000);
   },
   onLoad: function () {
-    uiUtil.setPageMethods(this);
+    // this.setPageMethods();
   }
-})
-
+}))

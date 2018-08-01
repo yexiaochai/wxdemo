@@ -10,9 +10,11 @@ Component({
     }
   },
   data: {
+    maskEventName: 'onToastHide'
   },
+
   attached: function () { 
-    console.log(this)
+    //console.log(this)
   },
   methods: {
   }

@@ -19,7 +19,8 @@ module.exports = Behavior({
   },
   methods: {
     onMaskEvent: function (e) {
-      this.triggerEvent('maskevent', e, {})
+      if (this.data.maskEventName)
+        this.triggerEvent(this.data.maskEventName, e, {})
     }
   }
 })

@@ -1,6 +1,8 @@
 <import src="./mod.searchbox.wxml" />
+
 <view>
   <template is="searchbox" />
 </view>
 
-<ui-toast bindmaskevent="onMaskEvent" is-show="{{isToastShow}}" message="{{toastMessage}}"></ui-toast>
+
+<include src="../../utils/abstract-page.wxml"/>
