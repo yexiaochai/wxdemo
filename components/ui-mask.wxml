@@ -1,0 +1,2 @@
+<view class="cm-overlay" style="z-index: {{zIndex}}; display: {{isShow}}" bindtap="onTap">
+</view>

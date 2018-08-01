@@ -1,0 +1,7 @@
+<import src="./mod.searchbox.wxml" />
+<view>
+  <template is="searchbox" />
+</view>
+
+<ui-loading bindmaskevent="onMaskEvent" is-show="{{isLoadingShow}}"></ui-loading>
+<ui-toast bindmaskevent="onMaskEvent" is-show="{{isToastShow}}" message="{{toastMessage}}"></ui-toast>
