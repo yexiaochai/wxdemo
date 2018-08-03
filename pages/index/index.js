@@ -12,6 +12,8 @@ Page(_page.initPage({
   onShow: function () {
     global.sss = this;
     let scope = this;
+
+    return;
     this.showMessage({
       message: '我是一个确定框',
       ok: {

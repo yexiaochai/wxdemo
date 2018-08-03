@@ -2,3 +2,4 @@
 <ui-loading is-show="{{isLoadingShow}}" ></ui-loading>
 <ui-alert bindonBtnTap="onAlertBtnTap" is-show="{{isMessageShow}}" title="{{alertTitle}}" message="{{alertMessage}}" btns="{{alertBtn}}"></ui-alert>
 
+<ui-calendar  is-show="" ></ui-calendar>

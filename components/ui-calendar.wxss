@@ -1,0 +1,156 @@
+.cm-calendar {
+}
+
+.cm-calendar .cm-calendar-hd {
+  /*
+  border-bottom: 1px solid #e5e5e5;
+  */
+  background-color: #ededed;
+  left: 0;
+  right: 0;
+  top: 88rpx;
+  height: 60rpx;
+  z-index: 960;
+}
+
+.cm-calendar .cm-calendar-hd .item {
+  color: #8c8c8c;
+  line-height: 60rpx;
+}
+
+.cm-calendar .cm-calendar-bd {
+  background-color: #fff;
+}
+
+.cm-calendar .cm-month {
+  text-align: center;
+  font-size: 32rpx;
+  line-height: 100rpx;
+}
+
+.calendar-wrapper-box {
+  background-color: #fff;
+  z-index: 2000;
+  width: 100%;
+}
+
+.calendar-wrapper-box .box-hd {
+  position: relative;
+  height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.calendar-wrapper-box .icon-back, .calendar-wrapper-box .icon-next {
+  position: absolute;
+  top: 0;
+}
+
+.calendar-wrapper-box .icon-back::before,
+.calendar-wrapper-box .icon-next::before {
+  border-color: #00b25a;
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.calendar-wrapper-box .icon-back.disabled::before,
+.calendar-wrapper-box .icon-next.disabled::before {
+  border-color: #ddd;
+}
+
+.calendar-wrapper-box .icon-back {
+  left: 30rpx;
+}
+
+.calendar-wrapper-box .icon-next {
+  right: 30rpx;
+}
+
+.calendar-wrapper-box .calendar-title {
+  position: absolute;
+  top: 0;
+  left: 130rpx;
+  right: 130rpx;
+  height: 45px;
+  line-height: 90rpx;
+  color: #00b358;
+  text-align: center;
+}
+
+.cm-day-list .item, .cm-calendar .cm-calendar-hd .item {
+  float: left;
+  width: 14.2%;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.cm-day-list li:nth-of-type(7n), .cm-calendar .cm-calendar-hd li:nth-of-type(7n),
+.cm-day-list li:nth-of-type(7n+1),
+.cm-calendar .cm-calendar-hd li:nth-of-type(7n+1) {
+  width: 14.5%;
+}
+
+.cm-day-list {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.cm-day-list:last-of-type {
+  border-bottom: none;
+}
+
+.cm-day-list .item {
+  position: relative;
+  height: 100rpx;
+  padding-top: 10rpx;
+  line-height:100rpx;
+
+}
+
+.cm-day-list li.active .cm-field-wrapper {
+  background-color: #00b358;
+  height: 80rpx;
+  line-height: 80rpx;
+  width: 80rpx;
+  border-radius: 40rpx;
+}
+
+.active .cm-field-wrapper {
+  margin: 0 auto;
+}
+
+.cm-day-list .item .multi-item .cm-field-title,
+.cm-day-list .item .multi-item .cm-field-label {
+  line-height: 80rpx;
+  height: 80rpx;
+  font-size: 24rpx;
+}
+
+.cm-day-list li.active .cm-field-title, .cm-day-list li.active .cm-field-price,
+.cm-day-list li.active .cm-field-label {
+  color: #fff;
+  text-align: center;
+}
+
+.cm-day-list li.cm-item--disabled .cm-field-title,
+.cm-day-list li.cm-item--disabled .cm-field-price,
+.cm-day-list li.cm-item--disabled .cm-field-label {
+  color: #ccc;
+}
+
+.cm-day-list .cm-field-title {
+  line-height: 80rpx;
+  font-size: 28rpx;
+}
+
+.cm-day-list .cm-field-price--sale {
+  color: #ff9a14;
+}
+
+.cm-day-list .cm-field-label {
+  font-size: 24rpx;
+}

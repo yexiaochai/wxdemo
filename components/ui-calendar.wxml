@@ -1,0 +1,87 @@
+<wxs module="dateUtil">
+  var isDate = function(date) {
+    return date && date.getMonth;
+  };
+
+  var isLeapYear = function(year) {
+    //传入为时间格式需要处理
+    if (isDate(year)) year = year.getFullYear()
+    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) return true;
+    return false;
+  };
+
+  var getDaysOfMonth = function(date) {
+    var month = date.getMonth(); //注意此处月份要加1，所以我们要减一
+    var year = date.getFullYear();
+    return [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+  }
+
+  var getBeginDayOfMouth = function(date) {
+    var month = date.getMonth();
+    var year = date.getFullYear();
+    var d = getDate(year, month, 1);
+    return d.getDay();
+  }
+
+  var getDisplayInfo = function(date) {
+    if (!isDate(date)) {
+      date = getDate(date)
+    }
+    var year = date.getFullYear();
+
+    var month = date.getMonth();
+    var d = getDate(year, month);
+
+    //这个月一共多少天
+    var days = getDaysOfMonth(d);
+
+    //这个月是星期几开始的
+    var beginWeek = getBeginDayOfMouth(d);
+
+    /*
+        console.log('info',JSON.stringify( {
+          year: year,
+          month: month,
+          days: days,
+          beginWeek: beginWeek
+        }));
+    */
+
+    return {
+      year: year,
+      month: month,
+      days: days,
+      beginWeek: beginWeek
+    }
+  }
+
+  module.exports = {
+    getDipalyInfo: getDisplayInfo
+  }
+</wxs>
+
+
+<view class="cm-calendar">
+  <view class="cm-calendar-hd ">
+    <block wx:for="{{weekDayArr}}">
+      <view class="item">{{item}}</view>
+    </block>
+  </view>
+  <view class="cm-calendar-bd ">
+    <view class="cm-month ">
+    </view>
+    <view class="cm-day-list">
+
+      <block wx:for="{{dateUtil.getDipalyInfo(curTime).days + dateUtil.getDipalyInfo(curTime).beginWeek}}" wx:for-index="index">
+
+        <view wx:if="{{index < dateUtil.getDipalyInfo(curTime).beginWeek }}" class="item active"></view>
+        <view wx:else class="item">{{index + 1 - dateUtil.getDipalyInfo(curTime).beginWeek}}</view>
+
+      </block>
+
+      <view class=" active  cm-item--disabled " data-cndate="" data-date="">
+
+      </view>
+    </view>
+  </view>
+</view>
