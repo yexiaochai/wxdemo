@@ -9,13 +9,10 @@ module.exports = {
   onCalendarDayTap: function (e) {
     let data = e.detail;
     var date = new Date(data.year, data.month, data.day);
-
     console.log(date)
-
     this.setData({
       calendarSelectedDate: date
     });
-
   },
   data: {
     isCalendarShow: '',
@@ -23,6 +20,4 @@ module.exports = {
     calendarDisplayTime: new Date(),
     calendarSelectedDate: null
   }
-
-
 }
