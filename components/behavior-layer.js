@@ -15,7 +15,6 @@ module.exports = Behavior({
     clickToHide: true
   },
   attached: function() {
-    console.log('layer')
   },
   methods: {
     onMaskEvent: function (e) {

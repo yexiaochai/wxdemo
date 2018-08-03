@@ -7,7 +7,6 @@ Component({
     clickToHide: false
   },
   attached: function () { 
-    console.log(this)
   },
   methods: {
   }

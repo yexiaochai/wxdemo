@@ -40,5 +40,4 @@ Page(_page.initPage({
   }
 }, {
   modCalendar: modCalendar
-
 }))

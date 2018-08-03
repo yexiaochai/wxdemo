@@ -44,8 +44,8 @@ class Page {
   //pageData为页面级别数据,mod为模块数据,要求一定不能重复
   initPage(pageData, mod) {
     //debugger;
-
     let _pageData = {};
+    let key, value, k, v;
 
     //为页面动态添加操作组件的方法
     Object.assign(_pageData, this.getPageFuncs(), pageData);
@@ -53,6 +53,18 @@ class Page {
     //生成真实的页面数据
     _pageData.data = {};
     Object.assign(_pageData.data, this.getPageData(), pageData.data || {});
+
+    for( key in mod) {
+      value = mod[key];
+      for(k in value) {
+        v = value[k];
+        if(k === 'data') {
+          Object.assign(_pageData.data, v);
+        } else {
+          _pageData[k] = v;
+        }
+      }
+    }
 
     console.log(_pageData);
     return _pageData;

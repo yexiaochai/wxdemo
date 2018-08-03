@@ -9,7 +9,6 @@ module.exports = Behavior({
   data: {
   },
   attached: function () { 
-     console.log('abstractview')
   },
   methods: {
     myBehaviorMethod: function () {
