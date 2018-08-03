@@ -6,12 +6,22 @@
 module.exports = {
   q: 1,
   ddd: function(){},
+  onCalendarDayTap: function (e) {
+    let data = e.detail;
+    var date = new Date(data.year, data.month, data.day);
 
+    console.log(date)
+
+    this.setData({
+      calendarSelectedDate: date
+    });
+
+  },
   data: {
     isCalendarShow: '',
-    CalendarDisplayMonthNum: 2,
-    CalendarDisplayTime: new Date(),
-    CalendarSelectedDate: null
+    calendarDisplayMonthNum: 2,
+    calendarDisplayTime: new Date(),
+    calendarSelectedDate: null
   }
 
 

@@ -27,6 +27,8 @@ Component({
     // debugger
   },
   methods: {
-   
+    onDayTap: function (e) {
+      this.triggerEvent('onDayTap', e.currentTarget.dataset)
+    }
   }
 })

@@ -137,7 +137,7 @@
         <block wx:key="tt" wx:for="{{dateUtil.getDipalyInfo(dateUtil.getChangedDate(displayTime, i).date).days + dateUtil.getDipalyInfo(dateUtil.getChangedDate(displayTime, i).date).beginWeek}}" wx:for-index="index">
 
           <view wx:if="{{index < dateUtil.getDipalyInfo(dateUtil.getChangedDate(displayTime, i).date).beginWeek }}" class="item "></view>
-          <view wx:else data-year="{{dateUtil.getChangedDate(displayTime, i).year}}" data-month="{{dateUtil.getChangedDate(displayTime, i).month}}" data-day="{{index + 1 - dateUtil.getDipalyInfo(dateUtil.getChangedDate(displayTime, i).date).beginWeek}}" class="item {{dateUtil.isSelected(selectedDate, dateUtil.getChangedDate(displayTime, i).year, dateUtil.getChangedDate(displayTime, i).month, index + 1 - dateUtil.getDipalyInfo(dateUtil.getChangedDate(displayTime, i).date).beginWeek)}}">
+          <view bindtap="onDayTap" wx:else data-year="{{dateUtil.getChangedDate(displayTime, i).year}}" data-month="{{dateUtil.getChangedDate(displayTime, i).month}}" data-day="{{index + 1 - dateUtil.getDipalyInfo(dateUtil.getChangedDate(displayTime, i).date).beginWeek}}" class="item {{dateUtil.isSelected(selectedDate, dateUtil.getChangedDate(displayTime, i).year, dateUtil.getChangedDate(displayTime, i).month, index + 1 - dateUtil.getDipalyInfo(dateUtil.getChangedDate(displayTime, i).date).beginWeek)}}">
             <view class="cm-field-title">
               {{dateUtil.getDayName(dayMap, dateUtil.getChangedDate(displayTime, i).month, index + 1 - dateUtil.getDipalyInfo(dateUtil.getChangedDate(displayTime, i).date).beginWeek) }} {{}}
             </view>
