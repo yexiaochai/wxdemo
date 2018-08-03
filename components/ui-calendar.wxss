@@ -106,17 +106,17 @@
 .cm-day-list .item {
   position: relative;
   height: 100rpx;
-  padding-top: 10rpx;
   line-height:100rpx;
-
 }
 
-.cm-day-list li.active .cm-field-wrapper {
+.cm-day-list .active .cm-field-title {
   background-color: #00b358;
   height: 80rpx;
   line-height: 80rpx;
   width: 80rpx;
   border-radius: 40rpx;
+    color: #fff;
+    margin: 0 auto;
 }
 
 .active .cm-field-wrapper {

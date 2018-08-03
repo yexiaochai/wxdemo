@@ -11,18 +11,20 @@ Component({
     
   },
   data: {
+
+
     weekDayArr: ['日', '一', '二', '三', '四', '五', '六'],
     displayMonthNum: 1,
 
     //当前显示的时间
-    displayTime: null,
+    displayTime: new Date(),
     //可以选择的最早时间
     startTime: null,
     //最晚时间
     endTime: null,
 
-    //当前时间，有时候是读取服务器端
-    curTime: new Date()
+    //当前选择时间
+    selectedDate: new Date(2018, 7,14)
     
 
   },
