@@ -11,7 +11,7 @@
     </block>
   </view>
   <view class="cm-actions  {{ btns.length > 2 ? 'cm-actions--full' : '' }}">
-    <block wx:for="{{btns}}">
+    <block wx:for="{{btns}}" wx:key="{{k}}">
       <text bindtap="onBtnEvent" data-type="{{item.type}}" class="{{item.type == 'ok' ? 'cm-btns-ok' : 'cm-btns-cancel'}} cm-actions-btn">{{item.name}}</text>
     </block>
 

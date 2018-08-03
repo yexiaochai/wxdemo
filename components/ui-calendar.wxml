@@ -40,15 +40,6 @@
     //这个月是星期几开始的
     var beginWeek = getBeginDayOfMouth(d);
 
-    /*
-        console.log('info',JSON.stringify( {
-          year: year,
-          month: month,
-          days: days,
-          beginWeek: beginWeek
-        }));
-    */
-
     return {
       year: year,
       month: month,
@@ -90,8 +81,6 @@
       date = getDate(date);
     }
 
-    console.log(date.getFullYear(), year, date.getMonth(), month, date.getDate(), day)
-
     if (date.getFullYear() == year && date.getMonth() == month && date.getDate() == day) return 'active';
     return '';
 
@@ -117,8 +106,6 @@
     }
 
     var name = formatNum(parseInt(month) + 1) + formatNum(day);
-
-    console.log(name);
 
     return dayMap[name] || day;
   };

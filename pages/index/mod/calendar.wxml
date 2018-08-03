@@ -1,0 +1,4 @@
+<ui-calendar displayTime="{{displayTime}}"
+selectedDate="{{selectedDate}}"
+displayMonthNum="{{displayMonthNum}}"
+is-show="{{isShow}}" ></ui-calendar>

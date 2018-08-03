@@ -2,4 +2,5 @@
 <view>
   <template is="searchbox" />
 </view>
+<include src="./mod/calendar.wxml"/>
 <include src="../../utils/abstract-page.wxml"/>

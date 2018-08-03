@@ -9,8 +9,7 @@ class Page {
 
     this.alertTitle = '';
     this.alertMessage = 'alertMessage';
-    this.alertBtn = [
-    ];
+    this.alertBtn = [];
 
     //通用方法列表配置，暂时约定用于点击
     this.methodSet = [
@@ -20,8 +19,8 @@ class Page {
       'showLoading',
       'hideLoading',
       'onAlertBtnTap',
-        'showMessage',
-        'hideMessage'
+      'showMessage',
+      'hideMessage'
     ];
 
     //当前page对象
@@ -34,13 +33,16 @@ class Page {
       alertTitle: this.alertTitle,
       alertMessage: this.alertMessage,
       alertBtn: this.alertBtn,
-      
+
       isLoadingShow: this.isLoadingShow,
       isToastShow: this.isToastShow,
       toastMessage: this.toastMessage
+
     }
   }
-  initPage(pageData) {
+
+  //pageData为页面级别数据,mod为模块数据,要求一定不能重复
+  initPage(pageData, mod) {
     //debugger;
 
     let _pageData = {};
@@ -57,12 +59,12 @@ class Page {
   }
   onAlertBtnTap(e) {
     let type = e.detail.target.dataset.type;
-    if(type === 'default') {
+    if (type === 'default') {
       this.hideMessage();
-    } else if(type === 'ok') {
-      if(this.alertOkCallback) this.alertOkCallback.call(this);
-    } else if(type == 'cancel'){
-      if(this.alertCancelCallback) this.alertCancelCallback.call(this);
+    } else if (type === 'ok') {
+      if (this.alertOkCallback) this.alertOkCallback.call(this);
+    } else if (type == 'cancel') {
+      if (this.alertCancelCallback) this.alertCancelCallback.call(this);
     }
   }
   showMessage(msg) {
@@ -74,7 +76,7 @@ class Page {
     this.alertOkCallback = null;
     this.alertCancelCallback = null;
 
-    if(typeof msg === 'object') {
+    if (typeof msg === 'object') {
       message = msg.message;
       alertBtn = [];
       msg.cancel.type = 'cancel';
@@ -87,7 +89,7 @@ class Page {
     }
 
     this.setData({
-      alertBtn:alertBtn,
+      alertBtn: alertBtn,
       isMessageShow: '',
       alertMessage: message
     });
@@ -109,27 +111,27 @@ class Page {
     }
     return funcs;
   }
-  
-showToast(message, callback) {
-  this.toastHideCallback = null;
-  if (callback) this.toastHideCallback = callback;
-  let scope = this;
-  this.setData({
-    isToastShow: '',
-    toastMessage: message
-  });
 
-  // 3秒后关闭loading
-  setTimeout(function () {
-    scope.hideToast();
-  }, 3000);
-}
-hideToast() {
-  this.setData({
-    isToastShow: 'none'
-  });
-  if (this.toastHideCallback) this.toastHideCallback.call(this);
-}
+  showToast(message, callback) {
+    this.toastHideCallback = null;
+    if (callback) this.toastHideCallback = callback;
+    let scope = this;
+    this.setData({
+      isToastShow: '',
+      toastMessage: message
+    });
+
+    // 3秒后关闭loading
+    setTimeout(function() {
+      scope.hideToast();
+    }, 3000);
+  }
+  hideToast() {
+    this.setData({
+      isToastShow: 'none'
+    });
+    if (this.toastHideCallback) this.toastHideCallback.call(this);
+  }
   //需要传入page实例
   showLoading() {
     this.setData({
