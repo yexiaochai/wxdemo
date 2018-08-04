@@ -13,17 +13,17 @@ Component({
       type: Number
     },
     displayTime: {
-      type: Date
+      type: String
     },
     selectedDate: {
-      type: Date
+      type: String
     }
   },
   data: {
     weekDayArr: ['日', '一', '二', '三', '四', '五', '六'],
   },
 
-  attached: function () { 
+  attached: function () {
     //console.log(this)
     // debugger
   },

@@ -5,7 +5,7 @@
 */
 const util = require('../../../utils/util.js')
 
-let selectedDate = new Date();
+let selectedDate = new Date().toString();
 
 module.exports = {
   showCalendar: function () {
@@ -19,13 +19,14 @@ module.exports = {
     });
   },
   preMonth: function () {
+
     this.setData({
-      calendarDisplayTime: util.dateUtil.preMonth(this.data.calendarDisplayTime)
+      calendarDisplayTime: util.dateUtil.preMonth(this.data.calendarDisplayTime).toString()
     });
   },
   nextMonth: function () {
     this.setData({
-      calendarDisplayTime: util.dateUtil.nextMonth(this.data.calendarDisplayTime)
+      calendarDisplayTime: util.dateUtil.nextMonth(this.data.calendarDisplayTime).toString()
     });
   },
   onCalendarDayTap: function (e) {
@@ -34,7 +35,7 @@ module.exports = {
     console.log(date)
     this.setData({
       isCalendarShow: 'none',
-      calendarSelectedDate: date,
+      calendarSelectedDate: date.toString(),
       calendarSelectedDateStr: util.dateUtil.format(date, 'Y年M月D日')
     });
   },
@@ -43,10 +44,14 @@ module.exports = {
   },
 
   data: {
+    ttt: {
+      key: 'date',
+      value: selectedDate
+    },
     isCalendarShow: '',
     calendarDisplayMonthNum: 1,
-    calendarDisplayTime: new Date(),
+    calendarDisplayTime: new Date(2018, 9).toString(),
     calendarSelectedDate: selectedDate,
-    calendarSelectedDateStr: util.dateUtil.format(selectedDate, 'Y年M月D日')
+    calendarSelectedDateStr: util.dateUtil.format(new Date(selectedDate), 'Y年M月D日')
   }
 }

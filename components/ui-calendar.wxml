@@ -55,6 +55,7 @@
   };
 
   var getChangedDate = function(date, m) {
+
     if (!isDate(date)) {
       date = getDate(date)
     }
@@ -111,14 +112,15 @@
   };
 
   module.exports = {
+        test: function (zzz) {
+              console.log('test', zzz)
+        },
     getDipalyInfo: getDisplayInfo,
     getChangedDate: getChangedDate,
     isSelected: isSelected,
     getDayName: getDayName
   }
 </wxs>
-
-
 <view class="cm-calendar" style="display: {{isShow}};">
   <view class="cm-calendar-hd ">
     <block wx:for="{{weekDayArr}}" wx:key="weekDayKey">
@@ -152,6 +154,5 @@
     </view>
 
   </block>
-
 
 </view>
