@@ -1,13 +1,10 @@
 class Store {
   constructor(opts) {
-    if(!opts || !opts.key) return;
-    Object.assign(this, opts);
-    //for(let k in opts) {
-    //  this[k] = opts[k];
-    //}
+    if(typeof opts === 'string') this.key = opts;
+    else Object.assign(this, opts);
 
     //如果没有传过期时间,则默认30分钟
-    if(!this.lifeTime) this.lifeTime = 30;
+    if(!this.lifeTime) this.lifeTime = 1;
 
     //本地缓存用以存放所有localstorage键值与过期日期的映射
     this._keyCache = 'SYSTEM_KEY_TIMEOUT_MAP';
@@ -19,13 +16,22 @@ class Store {
   }
 
   //获取一个数据缓存对象,存可以异步,获取我同步即可
-  get(key, sign){
+  get(sign){
+    let key = this.key;
     let now = new Date().getTime();
     var data = wx.getStorageSync(key);
+    if(!data) return null;
+    data = JSON.parse(data);
+    //数据过期
+    if (data.deadLine < now) {
+      this.removeOverdueCache();
+      return null;
+    }
 
-    if(!sign) return data.data;
-    if(sign === data.sign) return data.data;
-
+    if(data.sign) {
+      if(sign === data.sign) return data.data;
+      else return null;
+    }
     return null;
   }
 
@@ -33,15 +39,15 @@ class Store {
   sign 为格式化后的请求参数，用于同一请求不同参数时候返回新数据，比如列表为北京的城市，后切换为上海，会判断tag不同而更新缓存数据，tag相当于签名
   每一键值只会缓存一条信息
   */
-  set(key, data, sign) {
+  set(data, sign) {
     let timeout = new Date();
-    timeout.setTime(timeout.getTime() + this._getDeadline());
-    this._setData(key, data, time, sign);
+    let time = timeout.setTime(timeout.getTime() + this._getDeadline());
+    this._saveData(data, time, sign);
   }
-  _saveData(key, data, time, sign) {
+  _saveData(data, time, sign) {
+    let key = this.key;
     let entity = {
-      inDate: new Date().getTime(),
-      deadLine: time.getTime(),
+      deadLine: time,
       data: data,
       sign: sign
     };
@@ -61,9 +67,9 @@ class Store {
     let keyCache = this._keyCache;
     wx.getStorage({
       key: keyCache,
-      success: function (oldData) {
-        if(oldData) oldData = JSON.parse(oldData);
-        else oldData = {};
+      complete: function (data) {
+        let oldData = {};
+        if(data.data) oldData = JSON.parse(data.data);
         oldData[key] = timeout;
         wx.setStorage({
           key: keyCache,
@@ -79,16 +85,19 @@ class Store {
     wx.getStorage({
       key: keyCache,
       success: function (data) {
-        if(data) data = JSON.parse(data);
+        if(data && data.data) data = JSON.parse(data.data);
         for(let k in data) {
-          if(data.deadLine < now) {
+          if(data[k] < now) {
             delete data[k];
             wx.removeStorage({key: k, success: function(){}});
           }
         }
+        wx.setStorage({
+          key: keyCache,
+          data: JSON.stringify(data)
+        });
       }
     });
-
   }
 
 }
