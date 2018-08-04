@@ -129,7 +129,7 @@
   <block wx:for="{{displayMonthNum}}" wx:for-index="i" wx:key="t">
 
     <view class="cm-calendar-bd ">
-      <view class="cm-month ">
+      <view class="cm-month ex-class">
         {{dateUtil.getChangedDate(displayTime, i).str_month }}
       </view>
       <view class="cm-day-list">

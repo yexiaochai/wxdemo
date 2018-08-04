@@ -67,6 +67,19 @@ let dateUtil = {
 
   },
 
+  //获取前一个月
+  preMonth: function(d) {
+    if(!d.getTime) return new Date;
+    let date = new Date(d.getFullYear(), d.getMonth() - 1)
+    return date;
+  },
+
+  nextMonth: function (d) {
+    if(!d.getTime) return new Date;
+    let date = new Date(d.getFullYear(), d.getMonth() + 1)
+    return date;
+  },
+
   /**
    * @description 数字操作，
    * @return {string} 返回处理后的数字

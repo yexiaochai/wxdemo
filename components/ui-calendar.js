@@ -4,6 +4,7 @@ const util = require('../utils/util.js');
 // const dateUtil = util.dateUtil;
 
 Component({
+  externalClasses: ['ex-class'],
   behaviors: [
     View
   ],

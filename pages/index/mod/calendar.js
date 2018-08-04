@@ -18,6 +18,16 @@ module.exports = {
       isCalendarShow: 'none'
     });
   },
+  preMonth: function () {
+    this.setData({
+      calendarDisplayTime: util.dateUtil.preMonth(this.data.calendarDisplayTime)
+    });
+  },
+  nextMonth: function () {
+    this.setData({
+      calendarDisplayTime: util.dateUtil.nextMonth(this.data.calendarDisplayTime)
+    });
+  },
   onCalendarDayTap: function (e) {
     let data = e.detail;
     var date = new Date(data.year, data.month, data.day);

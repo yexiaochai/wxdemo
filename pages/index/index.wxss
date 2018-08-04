@@ -152,6 +152,16 @@ view {
   text-align: center;
 }
 
+.calendar-cm-month {
+    position: absolute;
+    top: 0;
+    height: 90rpx;
+    line-height: 90rpx;
+    color: #00b358;
+    text-align: center;
+    left: 90rpx;
+    right: 90rpx;
+}
 
 .icon-back, .icon-next {
     width: 88rpx;
@@ -177,3 +187,5 @@ view {
     -webkit-transform: rotate(225deg);
     transform: rotate(225deg);
 }
+
+
