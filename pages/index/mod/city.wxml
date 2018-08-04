@@ -1,0 +1,9 @@
+<ui-container bindonContainerHide="onContainerHide" is-show="{{isCalendarShow}}" >
+    <view class="calendar-wrapper-box">
+      <view class="box-hd">
+        <text class="fl icon-back js_back " bindtap="preMonth" ></text>
+        <text class="fr icon-next js_next" bindtap="nextMonth"></text>
+      </view>
+      <ui-calendar ex-class="calendar-cm-month" bindonDayTap="onCalendarDayTap" displayTime="{{calendarDisplayTime}}" selectedDate="{{calendarSelectedDate}}" displayMonthNum="{{calendarDisplayMonthNum}}" is-show="{{isCalendarShow}}"></ui-calendar>
+    </view>
+</ui-container>
