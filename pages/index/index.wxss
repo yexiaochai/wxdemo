@@ -188,4 +188,31 @@ view {
     transform: rotate(225deg);
 }
 
+.city-wrapper {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1500;
+}
+
+.city-list {
+    background-color: #fff;
+}
+
+.city-list .list-name {
+    height: 60rpx;
+    line-height: 60rpx;
+    background-color: #ededed;
+    padding: 0 10px;
+    font-size: 32rpx;
+    font-wight: 400;
+}
+
+ .city-list .list-item {
+    border-bottom: 1px solid #ededed;
+    font-size: 30rpx;
+    line-height: 40rpx;
+    padding: 20rpx 60rpx 20rpx 50rpx
+}
 
