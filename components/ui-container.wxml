@@ -1,5 +1,5 @@
-<view class="cm-modal cm-modal--toast" style="z-index: {{uiIndex}}; display: {{isShow}}; ">
-  {{message}}
+<view class="cm-modal " style="z-index: {{uiIndex}}; position: fixed; display: {{isShow}}; ">
+  <slot ></slot>
 </view>
 <view class="cm-overlay" bindtap="onMaskEvent" style="z-index: {{maskzIndex}}; display: {{isShow}}" >
 </view>

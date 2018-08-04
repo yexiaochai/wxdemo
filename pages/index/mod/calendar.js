@@ -13,15 +13,25 @@ module.exports = {
       isCalendarShow: ''
     });
   },
+  hideCalendar: function () {
+    this.setData({
+      isCalendarShow: 'none'
+    });
+  },
   onCalendarDayTap: function (e) {
     let data = e.detail;
     var date = new Date(data.year, data.month, data.day);
     console.log(date)
     this.setData({
+      isCalendarShow: 'none',
       calendarSelectedDate: date,
       calendarSelectedDateStr: util.dateUtil.format(date, 'Y年M月D日')
     });
   },
+  onContainerHide: function () {
+    this.hideCalendar();
+  },
+
   data: {
     isCalendarShow: '',
     calendarDisplayMonthNum: 1,

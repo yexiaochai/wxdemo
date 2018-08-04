@@ -10,7 +10,7 @@ Component({
     }
   },
   data: {
-    maskEventName: 'onToastHide'
+    maskEventName: 'onContainerHide'
   },
 
   attached: function () { 

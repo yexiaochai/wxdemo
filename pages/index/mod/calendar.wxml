@@ -1,9 +1,9 @@
-
-<view class="calendar-wrapper-box">
-  <view class="box-hd">
-    <text class="fl icon-back js_back "></text>
-    <text class="fr icon-next js_next"></text>
-  </view>
-  <ui-calendar bindonDayTap="onCalendarDayTap" displayTime="{{calendarDisplayTime}}" selectedDate="{{calendarSelectedDate}}" displayMonthNum="{{calendarDisplayMonthNum}}" is-show="{{isCalendarShow}}"></ui-calendar>
-
-</view>
+<ui-container bindonContainerHide="onContainerHide" is-show="{{isCalendarShow}}" >
+    <view class="calendar-wrapper-box">
+      <view class="box-hd">
+        <text class="fl icon-back js_back "></text>
+        <text class="fr icon-next js_next"></text>
+      </view>
+      <ui-calendar bindonDayTap="onCalendarDayTap" displayTime="{{calendarDisplayTime}}" selectedDate="{{calendarSelectedDate}}" displayMonthNum="{{calendarDisplayMonthNum}}" is-show="{{isCalendarShow}}"></ui-calendar>
+    </view>
+</ui-container>

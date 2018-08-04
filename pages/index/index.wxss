@@ -95,12 +95,13 @@ view {
     white-space: nowrap;
 }
 
-
-
 .calendar-wrapper-box {
   background-color: #fff;
-  z-index: 2000;
   width: 100%;
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
 }
 
 .calendar-wrapper-box .box-hd {
@@ -117,6 +118,7 @@ view {
 .calendar-wrapper-box .icon-back, .calendar-wrapper-box .icon-next {
   position: absolute;
   top: 0;
+
 }
 
 .calendar-wrapper-box .icon-back::before,
@@ -148,4 +150,30 @@ view {
   line-height: 90rpx;
   color: #00b358;
   text-align: center;
+}
+
+
+.icon-back, .icon-next {
+    width: 88rpx;
+    height: 88rpx;
+    line-height: 88rpx
+}
+
+.icon-back::before, .icon-next::before  {
+    content: "";
+    display: inline-block;
+    width: 20rpx;
+    height: 20rpx;
+    vertical-align: middle;
+    border-left: 4rpx solid #fff;
+    border-bottom: 4rpx solid #fff;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+.icon-next::before {
+    -webkit-transform: rotate(225deg);
+    transform: rotate(225deg);
 }
