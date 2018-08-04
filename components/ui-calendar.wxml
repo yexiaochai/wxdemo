@@ -119,7 +119,7 @@
 </wxs>
 
 
-<view class="cm-calendar">
+<view class="cm-calendar" style="display: {{isShow}};">
   <view class="cm-calendar-hd ">
     <block wx:for="{{weekDayArr}}" wx:key="weekDayKey">
       <view class="item">{{item}}</view>

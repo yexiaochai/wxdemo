@@ -3,21 +3,30 @@
 一个mod对应一个wxml,但是共享外部的css,暂时如此设计
 所有日历模块的需求全部再此实现
 */
+const util = require('../../../utils/util.js')
+
+let selectedDate = new Date();
+
 module.exports = {
-  q: 1,
-  ddd: function(){},
+  showCalendar: function () {
+    this.setData({
+      isCalendarShow: ''
+    });
+  },
   onCalendarDayTap: function (e) {
     let data = e.detail;
     var date = new Date(data.year, data.month, data.day);
     console.log(date)
     this.setData({
-      calendarSelectedDate: date
+      calendarSelectedDate: date,
+      calendarSelectedDateStr: util.dateUtil.format(date, 'Y年M月D日')
     });
   },
   data: {
     isCalendarShow: '',
-    calendarDisplayMonthNum: 2,
+    calendarDisplayMonthNum: 1,
     calendarDisplayTime: new Date(),
-    calendarSelectedDate: null
+    calendarSelectedDate: selectedDate,
+    calendarSelectedDateStr: util.dateUtil.format(selectedDate, 'Y年M月D日')
   }
 }

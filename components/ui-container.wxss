@@ -1,0 +1,47 @@
+.cm-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.cm-modal {
+  background-color: #fff;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 8rpx;
+}
+
+.cm-modal--toast {
+  width: 300rpx;
+  margin-top: -38rpx;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 20rpx 30rpx;
+  text-align: center;
+  font-size: 24rpx;
+  white-space: nowrap;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -150rpx;
+  margin-top: -100rpx;
+}
+.cm-modal--toast .icon-right {
+  display: inline-block;
+  margin: 10rpx 0 24rpx 10rpx;
+}
+.cm-modal--toast .icon-right::before {
+  content: "";
+  display: block;
+  width: 36rpx;
+  height: 16rpx;
+  border-bottom: 4rpx solid #fff;
+  border-left: 4rpx solid #fff;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}

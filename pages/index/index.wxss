@@ -96,3 +96,56 @@ view {
 }
 
 
+
+.calendar-wrapper-box {
+  background-color: #fff;
+  z-index: 2000;
+  width: 100%;
+}
+
+.calendar-wrapper-box .box-hd {
+  position: relative;
+  height: 90rpx;
+  line-height: 90rpx;
+  text-align: center;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.calendar-wrapper-box .icon-back, .calendar-wrapper-box .icon-next {
+  position: absolute;
+  top: 0;
+}
+
+.calendar-wrapper-box .icon-back::before,
+.calendar-wrapper-box .icon-next::before {
+  border-color: #00b25a;
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.calendar-wrapper-box .icon-back.disabled::before,
+.calendar-wrapper-box .icon-next.disabled::before {
+  border-color: #ddd;
+}
+
+.calendar-wrapper-box .icon-back {
+  left: 30rpx;
+}
+
+.calendar-wrapper-box .icon-next {
+  right: 30rpx;
+}
+
+.calendar-wrapper-box .calendar-title {
+  position: absolute;
+  top: 0;
+  left: 130rpx;
+  right: 130rpx;
+  height: 45px;
+  line-height: 90rpx;
+  color: #00b358;
+  text-align: center;
+}

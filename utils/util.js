@@ -113,18 +113,18 @@ let dateUtil = {
    * @description将日期格式化为字符串
    * @return {string} 常用格式化字符串
    */
-  format: function(date, format) {
+  format: function(date, f) {
     if (arguments.length < 2 && !date.getTime) {
       format = date;
       date = new Date();
-    } else if (arguments.length == 2 && _.isNumber(date) && _.isString(format)) {
+    } else if (arguments.length == 2 && typeof date === 'number' && typeof  f=== 'string') {
       var d = new Date();
       d.setTime(date);
       date = d;
     }
 
-    typeof format != 'string' && (format = 'Y年M月D日 H时F分S秒');
-    return format.replace(/Y|y|M|m|D|d|H|h|F|f|S|s/g, function(a) {
+    typeof f != 'string' && (f = 'Y年M月D日 H时F分S秒');
+    return f.replace(/Y|y|M|m|D|d|H|h|F|f|S|s/g, function(a) {
       switch (a) {
         case "y":
           return (date.getFullYear() + "").slice(2);
@@ -133,23 +133,23 @@ let dateUtil = {
         case "m":
           return date.getMonth() + 1;
         case "M":
-          return _.dateUtil.formatNum(date.getMonth() + 1);
+          return dateUtil.formatNum(date.getMonth() + 1);
         case "d":
           return date.getDate();
         case "D":
-          return _.dateUtil.formatNum(date.getDate());
+          return dateUtil.formatNum(date.getDate());
         case "h":
           return date.getHours();
         case "H":
-          return _.dateUtil.formatNum(date.getHours());
+          return dateUtil.formatNum(date.getHours());
         case "f":
           return date.getMinutes();
         case "F":
-          return _.dateUtil.formatNum(date.getMinutes());
+          return dateUtil.formatNum(date.getMinutes());
         case "s":
           return date.getSeconds();
         case "S":
-          return _.dateUtil.formatNum(date.getSeconds());
+          return dateUtil.formatNum(date.getSeconds());
       }
     });
   },
