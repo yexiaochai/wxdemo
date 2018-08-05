@@ -11,28 +11,35 @@ let selectedDate = new Date().toString();
 module.exports = {
   showCitylist: function(e) {
     let flag = e.currentTarget.dataset.flag;
-    let model = models.cityModel;
+    let model ;
     let scope = this;
 
     if (flag === 'start') {
-
+      model = models.cityModel;
     } else {
 
-    }
+      if(!this.data.cityStartId) {
+        this.showToast('请先选择出发城市');
+        return;
+      }
 
-    model.setParam({
-      type: 1
-    });
+      model = models.city2Model;
+      model.setParam({
+        startcityid: this.data.cityStartId
+      });
+    }
+    this.showLoading();
     model.execute(function(data) {
-      scope.setCityData(data);
+      scope.hideLoading();
+      scope.setCityData(data, flag);
     });
 
   },
   //用于设置城市数据
-  setCityData: function(data) {
+  setCityData: function(data, flag) {
     data = data.cities;
-    let citys = {}, sortCitys = [];
-    let k, gname, name, i, tmp = {}, index;
+    let citys = {}, sortCitys = [], arrData = [];
+    let k, gname, name, i, tmp = {}, index, len;
 
     //首先处理每个name生成唯一K
     for (k in data) {
@@ -58,21 +65,48 @@ module.exports = {
       sortCitys[index] = tmp;
     }
 
+
     this.setData({
-      cityData: sortCitys,
+      cityFlag: flag,
+      cityData: this._getSortData(sortCitys),
       isCityShow: ''
     });
   },
+
+  _getSortData: function (sortCitys) {
+    let i, len, arrData = [], tmp = {}, key;
+    for(i = 0, len = sortCitys.length; i < len; i++) {
+      tmp = sortCitys[i];
+      key = Object.keys(tmp)[0];
+      if(sortCitys[i][key].length > 0) {
+        arrData.push(sortCitys[i]);
+      }
+    }
+    return arrData;
+  },
+
   onCityTap: function(e) {
     let id = e.currentTarget.dataset.id;
     let name = e.currentTarget.dataset.cnname;
 
-    this.setData({
-      cityStartName: name,
-      cityStartId: id,
-      isCityShow: 'none'
-    });
+    if(!this.data.cityFlag) {
+      this.showToast('请您刷新页面');
+      return;
+    }
 
+    if(this.data.cityFlag === 'start') {
+      this.setData({
+        cityStartName: name,
+        cityStartId: id,
+        isCityShow: 'none'
+      });
+    } else {
+      this.setData({
+        cityArriveName: name,
+        cityArriveId: id,
+        isCityShow: 'none'
+      });
+    }
   },
   showCity: function() {
     this.setData({
@@ -86,8 +120,11 @@ module.exports = {
     });
   },
   data: {
+    cityFlag: null,
     cityStartId: null,
     cityStartName: '请选择出发地',
+    cityArriveId: null,
+    cityArriveName: '请选择到达地',
     isCityShow: 'none'
   }
 }

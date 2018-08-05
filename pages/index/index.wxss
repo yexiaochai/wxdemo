@@ -189,11 +189,14 @@ view {
 }
 
 .city-wrapper {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1500;
+position:absolute;
+width:100%;
+top:0;
+left:0;
+z-index:1500;
+bottom:0;
+background:#fff;
+
 }
 
 .city-list {

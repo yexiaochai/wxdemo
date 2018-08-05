@@ -8,7 +8,7 @@
   <view class="c-span3">
     到达</view>
   <view class="c-span9 js-arrive search-line-txt">
-    请选择到达地</view>
+    {{cityArriveName}}</view>
 </view>
 <view class="c-row search-line" data-flag="arrive" ontap="showCalendar">
   <view class="c-span3">

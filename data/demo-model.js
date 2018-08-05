@@ -84,7 +84,16 @@ class CityModel extends DemoModel {
   }
 }
 
+class City2Model extends DemoModel {
+  constructor() {
+    super();
+    this.url = '/city/getarrivalcitys';
+  }
+
+}
+
 module.exports = {
-  cityModel: new CityModel
+  cityModel: new CityModel,
+  city2Model: new City2Model
 
 }
