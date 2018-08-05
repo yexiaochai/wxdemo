@@ -1,20 +1,12 @@
-<view style="display: {{isCityShow}}; " class="city-wrapper"  >
+<view style="display: {{isCityShow}}; " class="city-wrapper">
+  <block wx:for="{{cityData}}" wx:key="k">
     <view class="city-list">
-        <view class="list-name">A</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
+      <block wx:for="{{item}}" wx:key="kk" wx:for-index="key" wx:for-item="value">
+        <view class="list-name">{{key}}</view>
+        <block wx:for="{{value}}" wx:key="kkk" wx:for-index="i" wx:for-item="v">
+          <view ontap="onCityTap" class="list-item" data-cnname="{{v.cnname}}" data-id="{{v.regionid}}">{{v.cnname}}</view>
+        </block>
+      </block>
     </view>
-    <view class="city-list">
-        <view class="list-name">A</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
-        <view class="list-item">成都</view>
-    </view>
+  </block>
 </view>

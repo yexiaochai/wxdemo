@@ -7,10 +7,8 @@ class CityStore extends Store {
     //30分钟过期时间
     this.lifeTime = 30;
   }
-
 }
 
 module.exports = {
   cityStore: new CityStore
-
 }

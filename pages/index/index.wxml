@@ -2,7 +2,7 @@
   <view class="c-span3">
     出发</view>
   <view class="c-span9 js-start search-line-txt">
-    请选择出发地</view>
+    {{cityStartName}}</view>
 </view>
 <view class="c-row search-line" data-flag="arrive" ontap="showCitylist">
   <view class="c-span3">

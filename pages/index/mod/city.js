@@ -12,24 +12,66 @@ module.exports = {
   showCitylist: function(e) {
     let flag = e.currentTarget.dataset.flag;
     let model = models.cityModel;
-    model.setParam({
-      type: 1
-    });
-    model.execute(function(data) {
-      console.log(data);
-      debugger;
-    });
-
-    return;
+    let scope = this;
 
     if (flag === 'start') {
 
     } else {
 
     }
+
+    model.setParam({
+      type: 1
+    });
+    model.execute(function(data) {
+      scope.setCityData(data);
+    });
+
   },
   //用于设置城市数据
   setCityData: function(data) {
+    data = data.cities;
+    let citys = {}, sortCitys = [];
+    let k, gname, name, i, tmp = {}, index;
+
+    //首先处理每个name生成唯一K
+    for (k in data) {
+      name = data[k].name;
+      if (!name) {
+        continue;
+      }
+      gname = name[0].toUpperCase();
+      if (!citys[gname]) citys[gname] = [];
+      citys[gname].push(data[k]);
+    }
+
+    for (i = 65; i < 91; i++) {
+      tmp = {};
+      tmp[String.fromCharCode(i)] = [];
+      sortCitys.push(tmp);
+    }
+
+    for (k in citys) {
+      index = k.charCodeAt() - 65;
+      tmp = {};
+      tmp[k] = citys[k];
+      sortCitys[index] = tmp;
+    }
+
+    this.setData({
+      cityData: sortCitys,
+      isCityShow: ''
+    });
+  },
+  onCityTap: function(e) {
+    let id = e.currentTarget.dataset.id;
+    let name = e.currentTarget.dataset.cnname;
+
+    this.setData({
+      cityStartName: name,
+      cityStartId: id,
+      isCityShow: 'none'
+    });
 
   },
   showCity: function() {
@@ -39,10 +81,13 @@ module.exports = {
   },
   shideCity: function() {
     this.setData({
+      cityData: [],
       isCityShow: 'none'
     });
   },
   data: {
+    cityStartId: null,
+    cityStartName: '请选择出发地',
     isCityShow: 'none'
   }
 }
