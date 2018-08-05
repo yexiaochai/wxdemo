@@ -4,38 +4,40 @@
 所有日历模块的需求全部再此实现
 */
 const util = require('../../../utils/util.js')
+const models = require('../../../data/demo-model.js')
 
 let selectedDate = new Date().toString();
 
 module.exports = {
-  showCitylist: function (e) {
+  showCitylist: function(e) {
     let flag = e.currentTarget.dataset.flag;
+    let model = models.cityModel;
+    model.setParam({
+      type: 1
+    });
+    model.execute(function(data) {
+      console.log(data);
+      debugger;
+    });
 
-    wx.request({
-      url: 'https://apikuai.baidu.com/city/getstartcitys',
-      data: {type: 1},
-      success: function (data) {
-        console.log(data);
-        debugger;
-      }
-    })
+    return;
 
-    if(flag === 'start') {
+    if (flag === 'start') {
 
     } else {
 
     }
   },
   //用于设置城市数据
-  setCityData: function (data) {
+  setCityData: function(data) {
 
   },
-  showCity: function () {
-      this.setData({
-        isCityShow: ''
-      });
+  showCity: function() {
+    this.setData({
+      isCityShow: ''
+    });
   },
-  shideCity: function () {
+  shideCity: function() {
     this.setData({
       isCityShow: 'none'
     });

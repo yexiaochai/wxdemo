@@ -1,10 +1,10 @@
 class Store {
   constructor(opts) {
-    if(typeof opts === 'string') this.key = opts;
+    if (typeof opts === 'string') this.key = opts;
     else Object.assign(this, opts);
 
     //如果没有传过期时间,则默认30分钟
-    if(!this.lifeTime) this.lifeTime = 1;
+    if (!this.lifeTime) this.lifeTime = 1;
 
     //本地缓存用以存放所有localstorage键值与过期日期的映射
     this._keyCache = 'SYSTEM_KEY_TIMEOUT_MAP';
@@ -16,11 +16,11 @@ class Store {
   }
 
   //获取一个数据缓存对象,存可以异步,获取我同步即可
-  get(sign){
+  get(sign) {
     let key = this.key;
     let now = new Date().getTime();
     var data = wx.getStorageSync(key);
-    if(!data) return null;
+    if (!data) return null;
     data = JSON.parse(data);
     //数据过期
     if (data.deadLine < now) {
@@ -28,8 +28,8 @@ class Store {
       return null;
     }
 
-    if(data.sign) {
-      if(sign === data.sign) return data.data;
+    if (data.sign) {
+      if (sign === data.sign) return data.data;
       else return null;
     }
     return null;
@@ -56,7 +56,7 @@ class Store {
     wx.setStorage({
       key: key,
       data: JSON.stringify(entity),
-      success: function () {
+      success: function() {
         //每次真实存入前,需要往系统中存储一个清单
         scope._saveSysList(key, entity.deadLine);
       }
@@ -67,9 +67,9 @@ class Store {
     let keyCache = this._keyCache;
     wx.getStorage({
       key: keyCache,
-      complete: function (data) {
+      complete: function(data) {
         let oldData = {};
-        if(data.data) oldData = JSON.parse(data.data);
+        if (data.data) oldData = JSON.parse(data.data);
         oldData[key] = timeout;
         wx.setStorage({
           key: keyCache,
@@ -84,12 +84,15 @@ class Store {
     let keyCache = this._keyCache;
     wx.getStorage({
       key: keyCache,
-      success: function (data) {
-        if(data && data.data) data = JSON.parse(data.data);
-        for(let k in data) {
-          if(data[k] < now) {
+      success: function(data) {
+        if (data && data.data) data = JSON.parse(data.data);
+        for (let k in data) {
+          if (data[k] < now) {
             delete data[k];
-            wx.removeStorage({key: k, success: function(){}});
+            wx.removeStorage({
+              key: k,
+              success: function() {}
+            });
           }
         }
         wx.setStorage({
