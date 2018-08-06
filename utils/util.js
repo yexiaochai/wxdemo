@@ -82,6 +82,21 @@ let dateUtil = {
     return date;
   },
 
+  //获取前一个天
+  preDay: function(d) {
+    if(typeof d === 'string') d = new Date(d);
+    else d = new Date();
+    let date = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1 )
+    return date;
+  },
+
+  nextDay: function (d) {
+    if(typeof d === 'string') d = new Date(d);
+    else d = new Date();
+    let date = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)
+    return date;
+  },
+
   /**
    * @description 数字操作，
    * @return {string} 返回处理后的数字
