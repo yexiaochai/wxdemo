@@ -4,3 +4,6 @@
     <text class="log-item">{{index + 1}}. {{log}}</text>
   </block>
 </view>
+
+<include src="./mod/calendar.wxml" />
+<include src="../../utils/abstract-page.wxml" />

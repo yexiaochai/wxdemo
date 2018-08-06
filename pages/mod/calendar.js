@@ -3,7 +3,7 @@
 一个mod对应一个wxml,但是共享外部的css,暂时如此设计
 所有日历模块的需求全部再此实现
 */
-const util = require('../../../utils/util.js')
+const util = require('../../utils/util.js')
 
 let selectedDate = new Date().toString();
 

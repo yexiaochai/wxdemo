@@ -1,8 +1,6 @@
 //获取公共ui操作类实例
 const _page = require('../../utils/abstract-page.js');
 let modCalendar = require('../mod/calendar.js');
-let modCity = require('../mod/city.js');
-
 
 //获取应用实例
 const app = getApp()
@@ -16,11 +14,12 @@ Page(_page.initPage({
   onShow: function () {
     global.sss = this;
     let scope = this;
+
+
   },
   onLoad: function () {
     // this.setPageMethods();
   }
 }, {
-  modCalendar: modCalendar,
-  modCity: modCity
+  modCalendar: modCalendar
 }))
