@@ -89,11 +89,18 @@ class City2Model extends DemoModel {
     super();
     this.url = '/city/getarrivalcitys';
   }
+}
 
+class ListModel extends DemoModel {
+  constructor() {
+    super();
+    this.url = '/schedule/list';
+  }
 }
 
 module.exports = {
   cityModel: new CityModel,
-  city2Model: new City2Model
+  city2Model: new City2Model,
+  listModel: new ListModel
 
 }

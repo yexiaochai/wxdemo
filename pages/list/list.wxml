@@ -35,4 +35,8 @@
   <include src="../mod/calendar.wxml" />
   <include src="../../utils/abstract-page.wxml" />
 
+
+  <view class="bus-list js_bus_list " ontap="goIndex">
+    去首页
+    </view>
 </view>

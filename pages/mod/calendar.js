@@ -33,6 +33,9 @@ module.exports = {
     let data = e.detail;
     var date = new Date(data.year, data.month, data.day);
     console.log(date)
+
+    //留下一个钩子函数
+    if(this.calendarHook) this.calendarHook(date);
     this.setData({
       isCalendarShow: 'none',
       calendarSelectedDate: date.toString(),

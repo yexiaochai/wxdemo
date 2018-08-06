@@ -1,8 +1,9 @@
 {
   "pages":[
+    "pages/index/index",
+    
     "pages/list/list",
     
-    "pages/index/index",
     "pages/logs/logs"
   ],
   "window":{

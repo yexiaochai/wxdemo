@@ -17,7 +17,7 @@
     {{calendarSelectedDateStr}}</view>
 </view>
 <view class="c-row " data-flag="arrive">
-  <span class="btn-primary full-width js_search_list">查询</span>
+  <span class="btn-primary full-width js_search_list" ontap="goList" >查询</span>
 </view>
 <include src="../mod/calendar.wxml" />
 <include src="../mod/city.wxml" />

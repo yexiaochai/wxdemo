@@ -13,6 +13,21 @@ Page(_page.initPage({
   // methods: uiUtil.getPageMethods(),
   methods: {
   },
+  goList: function () {
+    if(!this.data.cityStartId) {
+      this.showToast('请选择出发城市');
+      return;
+    }
+    if(!this.data.cityArriveId) {
+      this.showToast('请选择到达城市');
+      return;
+    }
+
+    wx.navigateTo({
+      url: '../list/list?sid=' + this.data.cityStartId + '&aid=' + this.data.cityArriveId + '&date=' + new Date(this.data.calendarSelectedDate).getTime()
+    })
+
+  },
   onShow: function () {
     global.sss = this;
     let scope = this;
