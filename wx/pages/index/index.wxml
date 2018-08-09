@@ -1,6 +1,6 @@
 <view class="c-row search-line" data-flag="start" ontap="showCitylist">
   <view class="c-span3">
-    出发</view>
+    出发{{sss}}</view>
   <view class="c-span9 js-start search-line-txt">
     {{cityStartName}}</view>
 </view>

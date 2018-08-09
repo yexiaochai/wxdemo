@@ -1,11 +1,9 @@
 {
-  "pages":[
-    "pages/index/index",
-    
-    "pages/list/list",
-    
-    "pages/logs/logs"
-  ],
+"pages":[
+  "pages/index/index",
+  "pages/list/list",
+  "pages/logs/logs"
+],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",

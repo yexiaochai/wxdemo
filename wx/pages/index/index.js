@@ -9,6 +9,7 @@ const app = getApp()
 
 Page(_page.initPage({
   data: {
+    sss: 'sss'
   },
   // methods: uiUtil.getPageMethods(),
   methods: {
@@ -28,11 +29,18 @@ Page(_page.initPage({
     })
 
   },
-  onShow: function () {
-    global.sss = this;
-    let scope = this;
-  },
+  // onReady: function () {
+  //   debugger;
+
+  // },
+  // onShow: function () {
+  //   debugger;
+    
+  //   global.sss = this;
+  //   let scope = this;
+  // },
   onLoad: function () {
+    this.setData({sss: 222})
     // this.setPageMethods();
   }
 }, {

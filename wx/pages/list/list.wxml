@@ -41,3 +41,15 @@
   <include src="../../utils/abstract-page.wxml" />
 
 </view>
+
+
+{{dateUtil.test()}}
+
+<wxs module="dateUtil">
+  console.log(111)
+  module.exports = {
+        test: function (zzz) {
+              console.log('test', zzz)
+        }
+  }
+</wxs>

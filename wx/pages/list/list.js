@@ -5,6 +5,8 @@ const models = require('../../data/demo-model.js')
 const util = require('../../utils/util.js')
 let selectedDate = new Date().toString();
 
+console.log('list');
+
 //获取应用实例
 const app = getApp()
 
@@ -112,7 +114,17 @@ Page(_page.initPage({
     this._setDateInfo(data.date);
     this._initData(data);
 
+  },
+
+  onReady: function () {
+
+  },
+  onShow: function () {
+
+    global.sss = this;
+    let scope = this;
   }
+  
 }, {
   modCalendar: modCalendar
 }))
