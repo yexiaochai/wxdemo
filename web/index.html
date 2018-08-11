@@ -6,5 +6,206 @@
 </head>
 <body>
 
+<script type="text/javascript" src="libs/zepto.js" ></script>
+<script type="text/javascript">
+
+  class View {
+    constructor(opts) {
+      this.template = '<view>{{pageShow}}</view><view class="ddd" is-show="{{pageShow}}" >{{pageShow}}<view class="c1">{{pageData}}</view></view>';
+
+      //由控制器page传入的初始数据或者setData产生的数据
+      this.data = {
+        pageShow: 'pageshow',
+        pageData: 'pageData',
+        pageShow1: 'pageShow1'
+      };
+
+      this.labelMap = {
+        'view': 'div',
+        '#text': 'span'
+      };
+
+      this.nodes = {};
+      this.nodeInfo = {};
+    }
+
+    /*
+      传入一个节点,解析出一个节点,并且将节点中的数据以初始化数据改变
+      并且将其中包含{{}}标志的节点信息记录下来
+    */
+    _handlerNode (node) {
+
+      let reg = /\{\{([\s\S]+?)\}\}/;
+      let result, name, value, n, map = {};
+      let attrs , i, len, attr;
+
+      name = node.nodeName;
+      attrs = node.attributes;
+      value = node.nodeValue;
+      n = document.createElement(this.labelMap[name.toLowerCase()] || name);
+
+      //说明是文本,需要记录下来了
+      if(node.nodeType === 3) {
+        n.innerText =  this.data[value] || '';
+
+        result =  reg.exec(value);
+        if(result) {
+          n.innerText =  this.data[result[1]] || '';
+
+          if(!map[result[1]]) map[result[1]] = [];
+          map[result[1]].push({
+            type: 'text',
+            node: n
+          });
+        }
+      }
+
+      if(attrs) {
+        //这里暂时只处理属性和值两种情况,多了就复杂10倍了
+        for (i = 0, len = attrs.length; i < len; i++) {
+          attr = attrs[i];
+          result = reg.exec(attr.value);
+
+          n.setAttribute(attr.name, attr.value);
+          //如果有node需要处理则需要存下来标志
+          if (result) {
+            n.setAttribute(attr.name, this.data[result[1]] || '');
+
+            //存储所有会用到的节点,以便后面动态更新
+            if (!map[result[1]]) map[result[1]] = [];
+            map[result[1]].push({
+              type: 'attr',
+              name: attr.name,
+              node: n
+            });
+
+          }
+        }
+      }
+
+      return {
+        node: n,
+        map: map
+      }
+
+    }
+
+    //遍历一个节点的所有子节点,如果有子节点继续遍历到没有为止
+    _runAllNode(node, map, root) {
+
+      let nodeInfo = this._handlerNode(node);
+      let _map = nodeInfo.map;
+      let n = nodeInfo.node;
+      let k, i, len, children = node.childNodes;
+
+      //先将该根节点插入到上一个节点中
+      root.appendChild(n);
+
+      //处理map数据,这里的map是根对象,最初的map
+      for(k in _map) {
+        if(map[k]) {
+          map[k].push(_map[k]);
+        } else {
+          map[k] = _map[k];
+        }
+      }
+
+      for(i = 0, len = children.length; i < len; i++) {
+        this._runAllNode(children[i], map, n);
+      }
+
+    }
+
+    //处理每个节点,翻译为页面识别的节点,并且将需要操作的节点记录
+    splitTemplate () {
+      let nodes = $(this.template);
+      let map = {}, root = document.createElement('div');
+      let i, len;
+
+      for(i = 0, len = nodes.length; i < len; i++) {
+        this._runAllNode(nodes[i], map, root);
+      }
+
+      window.map = map;
+      return root
+    }
+
+      //拆分目标形成node,这个方法过长,真实项目需要拆分
+    splitTemplate1 () {
+      let template = this.template;
+      let node = $(this.template)[0];
+      let map = {}, n, name, root = document.createElement('div');
+      let isEnd = false, index = 0, result;
+
+      let attrs, i, len, attr;
+      let reg = /\{\{([\s\S]+?)\}\}/;
+
+      window.map = map;
+
+      //开始遍历节点,处理
+      while (!isEnd) {
+        name = node.localName;
+        attrs = node.attributes;
+        value = node.nodeValue;
+        n = document.createElement(this.labelMap[name] || name);
+
+        //说明是文本,需要记录下来了
+        if(node.nodeType === 3) {
+          n.innerText =  this.data[value] || '';
+
+          result =  reg.exec(value);
+          if(result) {
+            n.innerText =  this.data[value] || '';
+
+            if(!map[value]) map[value] = [];
+            map[value].push({
+              type: 'text',
+              node: n
+            });
+          }
+        }
+
+        //这里暂时只处理属性和值两种情况,多了就复杂10倍了
+        for(i = 0, len = attrs.length; i < len; i++) {
+          attr = attrs[i];
+          result =  reg.exec(attr.value);
+
+          n.setAttribute(attr.name, attr.value);
+          //如果有node需要处理则需要存下来标志
+          if(result) {
+            n.setAttribute(attr.name, this.data[result[1]] || '');
+
+            //存储所有会用到的节点,以便后面动态更新
+            if(!map[result[1]]) map[result[1]] = [];
+            map[result[1]].push({
+              type: 'attr',
+              name: attr.name,
+              node: n
+            });
+
+          }
+        }
+
+debugger
+
+        if(index === 0) root.appendChild(n);
+        isEnd = true;
+        index++;
+
+      }
+
+      return root;
+
+
+      console.log(node)
+    }
+
+  }
+
+  let view = new View();
+
+  document.body.appendChild(window.node)
+
+</script>
 </body>
 </html>

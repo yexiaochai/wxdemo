@@ -1,0 +1,4 @@
+<view>
+  <!-- 以下是对一个自定义组件的引用 -->
+  <my-component inner-text="Some text"></my-component>
+</view>
