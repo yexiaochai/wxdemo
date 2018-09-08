@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="./static/css/global.css" rel="stylesheet" type="text/css"/>
+  <script  src="./libs/react.development.js"></script>
+  <script  src="./libs/react-dom.development.js"></script>
+  <script src="./libs/JSXTransformer.js"></script>
+</head>
+<body>
+
+<div id="root">ddd</div>
+
+
+<script type="text/jsx">
+
+
+
+class UIMask extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+    this.onClick = this.onClick.bind(this);
+  }
+  onClick(e) {
+    if(e.target.dataset.flag !== 'mask') return;
+    this.props.onMaskClick();
+  }
+  render() {
+    return (
+      <div onClick={this.onClick} data-flag="mask" className="cm-overlay" style={{zIndex: this.props.uiIndex, display: this.props.isShow}} >
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+class UIAlert extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uiIndex: 3000
+    };
+    this.onMaskClick = this.onMaskClick.bind(this);
+    this.onBtnClick = this.onBtnClick.bind(this);
+
+  }
+  onMaskClick() {
+    this.props.hideMessage();
+  }
+  onBtnClick(e) {
+    let index = e.target.dataset.index;
+    this.props.btns[index].callback();
+  }
+  render() {
+    let scope = this;
+    return (
+<UIMask onMaskClick={this.onMaskClick} uiIndex={this.state.uiIndex} isShow={this.props.isShow}>
+  <div className="cm-modal cm-modal--alert" style={{zIndex: this.state.uiIndex + 1, display: this.props.isShow}}>
+    <div className="cm-modal-bd">
+        <div className="cm-alert-title">{this.props.title}</div>
+       {this.props.message.length > 10 ? <div className="cm-mutil-lines">{this.props.message}</div> : <div>{this.props.message}</div>}
+    </div>
+    <div className={this.props.btns.length > 2 ? 'cm-actions  cm-actions--full' : 'cm-actions '}>
+      {
+        this.props.btns.map(function(item, index) {
+          return <span onClick={scope.onBtnClick} data-index={index}  data-type={item.type} className={item.type == 'ok' ? 'cm-btns-ok cm-actions-btn ' : 'cm-actions-btn cm-btns-cancel'}>{item.name}</span>
+        })
+      }
+    </div>
+  </div>
+</UIMask>
+    );
+  }
+};
+
+
+
+
+//这里是真正的调用者，页面级别控制器
+
+class MainPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.showMessage = this.showMessage.bind(this);
+    this.hideMessage = this.hideMessage.bind(this);
+    let scope = this;
+
+    this.state = {
+      alertShow: 'none',
+      btns: [{
+        type: 'ok',
+        name: '确定',
+        callback: function() {
+          scope.hideMessage();
+          console.log('成功');
+        }
+      }, {
+        type: 'cancel',
+        name: '取消',
+        callback: function() {
+          scope.hideMessage();
+          console.log('取消');
+        }
+      }]
+    };
+
+  }
+  showMessage() {
+    this.setState({
+      alertShow: ''
+    })
+  }
+  hideMessage() {
+    this.setState({
+      alertShow: 'none'
+    })
+  }
+  render() {
+    return (
+      <div>
+        <input type="button" value="我是一个一般的按钮" onClick={this.showMessage} /> 
+        <UIAlert 
+        title="title" 
+        message="点点滴滴"
+        btns={this.state.btns} 
+        showMessage={this.showMessage} 
+        hideMessage={this.hideMessage} 
+        isShow={this.state.alertShow} 
+        name="alert" 
+        uiIndex="333" 
+        />
+      </div>
+    );
+  }
+}
+
+
+ReactDOM.render(
+  <MainPage />,
+  document.getElementById('root')
+);
+
+</script>
+
+</body>
+</html>

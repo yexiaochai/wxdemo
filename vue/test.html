@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="./static/css/global.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<div id="app">
+  <input type="button" value="我是一个一般的按钮" v-on:click="showMessage" />
+  <ui-mask  v-bind:style="{zIndex: uiIndex, display: isShow}">
+    <ui-alert :title="title"
+              :message="message"
+              v-bind:style="{zIndex: uiIndex + 1, display: isShow}"
+              :btns="btns" ></ui-alert>
+  </ui-mask>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+
+Vue.component('ui-mask', {
+  methods:{
+    onClick: function (e) {
+      if(e.target.dataset.flag !== 'mask') return;
+      this.$parent.hideMessage();
+    }
+  },
+  template: `
+<div v-on:click="onClick" data-flag="mask" class="cm-overlay" >
+  <slot></slot>
+</div>
+  `
+});
+
+  Vue.component('ui-alert', {
+    props: {
+      title: {
+        type: String
+      },
+      message: {
+        type: String
+      },
+      uiIndex: {
+        type: String
+      },
+      isShow: {
+        type: String
+      },
+      btns: Array
+    },
+     methods: {
+        onBtnEvent: function (e) {
+          let index = e.target.dataset.index;
+          this.btns[index].callback.call(this.$parent.$parent);
+        }
+     },
+      template: `
+<div class="cm-modal cm-modal--alert">
+  <div class="cm-modal-bd">
+    <template v-if="title">
+      <div class="cm-alert-title">{{title}}</div>
+    </template>
+    <template v-if="message.length > 20">
+      <div class="cm-mutil-lines">{{message}}</div>
+    </template>
+    <template v-else>
+      <div>{{message}}</div>
+    </template>
+  </div>
+  <div class="cm-actions" v-bind:class="[btns.length > 2 ? 'cm-actions--full' : '']">
+    <template v-for="(item, index) in btns">
+      <span v-on:click="onBtnEvent"  :data-index="index" class="cm-actions-btn" v-bind:class="[item.type == 'ok' ? 'cm-btns-ok' : 'cm-btns-cancel']">{{item.name}}</span>
+    </template>
+  </div>
+</div>
+  `
+  })
+  new Vue({
+    methods: {
+      showMessage: function() {
+        this.isShow = '';
+      },
+      hideMessage: function() {
+        this.isShow = 'none';
+      }
+    },
+    data: function() {
+      return {
+        title: 'title1',
+        message: 'message1',
+        uiIndex: 3000,
+        isShow: 'none',
+        btns: [{
+          type: 'ok',
+          name: '确定',
+          callback: function() {
+            this.hideMessage();
+            console.log('成功');
+          }
+        }, {
+          type: 'cancel',
+          name: '取消',
+          callback: function() {
+            this.hideMessage();
+            console.log('取消');
+          }
+        }]
+      };
+    } ,
+    el: '#app'
+  })
+
+</script>
+</body>
+</html>

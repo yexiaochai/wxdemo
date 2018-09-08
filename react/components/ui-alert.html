@@ -1,0 +1,21 @@
+<view class="cm-modal cm-modal--alert" style="z-index: {{uiIndex}}; display: {{isShow}}; ">
+  <view class="cm-modal-bd">
+    <block wx:if="{{title}}">
+      <view class="cm-alert-title">{{title}}</view>
+    </block>
+    <block wx:if="{{message.length > 20}}">
+      <view class="cm-mutil-lines">{{message}}</view>
+    </block>
+    <block wx:else>
+      <view>{{message}}</view>
+    </block>
+  </view>
+  <view class="cm-actions  {{ btns.length > 2 ? 'cm-actions--full' : '' }}">
+    <block wx:for="{{btns}}" wx:key="{{k}}">
+      <text bindtap="onBtnEvent" data-type="{{item.type}}" class="{{item.type == 'ok' ? 'cm-btns-ok' : 'cm-btns-cancel'}} cm-actions-btn">{{item.name}}</text>
+    </block>
+
+  </view>
+</view>
+<view class="cm-overlay" bindtap="onMaskEvent" style="z-index: {{maskzIndex}}; display: {{isShow}}">
+</view>
