@@ -7,11 +7,9 @@ function isOverdue(year, month, day) {
   return date.getTime() < now.getTime();
 }
 
-function isToday(year, month, day) {
+function isToday(year, month, day, selectedDate) {
   let date = new Date(year, month, day);
-  let now = new Date();
-  now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  return date.getTime() === now.getTime();
+  return date.getTime() == selectedDate;
 }
 
 export default {
@@ -19,30 +17,42 @@ export default {
   data: {
     props: {
       year: {
-        type: String
+        type: Number
       },
       month: {
-        type: String
+        type: Number
       },
       day: {
+        type: Number
+      },
+      selectedDate: {
         type: Number
       }
     },
     methods: {
+    	onDayClick: function (e) {
+		  let data = e.currentTarget.dataset;
+		  this.$parent.$parent.$emit('dayclick', data);
+    	}
     },
-    data: function() {
-      //是否过期了
-      let klass = isOverdue(this.year, this.month, this.day) ? 'cm-item--disabled' : '';
-      if(isToday(this.year, this.month, this.day)) klass += 'active'
+	//引入计算属性概念
+    computed: {
+	    // 计算属性的 getter
+	    klass: function () {
+	       //是否过期了
+      	let klass = isOverdue(this.year, this.month, this.day) ? 'cm-item--disabled' : '';
 
-      return {
-        klass: klass
-      }
+      	if(isToday(this.year, this.month, this.day, this.selectedDate)) klass += 'active'
+	      return klass;
+	    }
+	},
+    data: function() {
+      return {}
     },
     template: 
     `
-<li v-bind:class="klass" v-bind:data-year="year" v-bind:data-month="month" v-bind:data-day="day">
-	{{day}}
+<li :selectedDate="selectedDate" @click="onDayClick" :class="klass" v-bind:data-year="year" v-bind:data-month="month" v-bind:data-day="day">
+	<div class="cm-field-wrapper "><div class="cm-field-title">{{day}}</div></div>
 </li>
     `
   }
