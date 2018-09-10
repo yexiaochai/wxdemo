@@ -13,28 +13,16 @@
 //  console.error = function () {
 //  }
   import index from './pages/index/index.js'
-  import data from './components/ui-calendar.js'
   Vue.component(index.name, index.data);
-  Vue.component(data.name, data.data);
   new Vue({
     methods: {
-      onDayClick: function (data) {
-        this.selectedDate = new Date(data.year, data.month, data.day).getTime() + '';
-//        debugger;
-      }
     },
     data: function() {
-
-
-      return {
-        displayTime: new Date().getTime(),
-        selectedDate: new Date(2018, 8, 13).getTime(),
-        displayMonthNum: 2
-      }
+      return {};
     },
     // template: `<page-index></page-index>`,
     template: `
-      <ui-calendar  v-on:dayclick="onDayClick" :selectedDate="selectedDate" :displayMonthNum="displayMonthNum" :displayTime="displayTime"  ></ui-calendar>
+      <page-index></page-index>
     `,
     el: '#app'
   })

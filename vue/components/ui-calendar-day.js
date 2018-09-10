@@ -27,12 +27,16 @@ export default {
       },
       selectedDate: {
         type: Number
-      }
+      },
+      scope: {
+        type: Object
+      },
+      
     },
     methods: {
     	onDayClick: function (e) {
 		  let data = e.currentTarget.dataset;
-		  this.$parent.$parent.$emit('dayclick', data);
+		  this.scope.$emit('dayclick', data);
     	}
     },
 	//引入计算属性概念
@@ -47,7 +51,9 @@ export default {
 	    }
 	},
     data: function() {
-      return {}
+      return {
+
+      }
     },
     template: 
     `

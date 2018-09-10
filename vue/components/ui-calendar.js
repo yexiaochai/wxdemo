@@ -18,13 +18,22 @@ export default {
     },
     methods: {
     },
+    //引入计算属性概念
+    computed: {
+      // 计算属性的 getter
+      year: function () {
+        let date = new Date(this.displayTime);
+        return date.getFullYear();
+      },
+      month: function () {
+        let date = new Date(this.displayTime);
+        return date.getMonth();
+      }
+      
+  },
     data: function() {
-      //要求传入的当前显示时间必须是时间戳
-      let date = new Date(this.displayTime);
-
       return {
-        year: date.getFullYear(),
-        month: date.getMonth(),
+        scope: this, //点击日历的时候需要厨房的事件
         weekDayArr: ['日', '一', '二', '三', '四', '五', '六']
       }
     },
@@ -37,7 +46,7 @@ export default {
     </template>
   </ul>
     <template v-for="m in displayMonthNum" >
-      <ui-calendar-month :selectedDate="selectedDate" :year="year" :month="month+m-1" ></ui-calendar-month>
+      <ui-calendar-month :scope="scope" :selectedDate="selectedDate" :year="year" :month="month+m-1" ></ui-calendar-month>
     </template>
 </ul>
 `

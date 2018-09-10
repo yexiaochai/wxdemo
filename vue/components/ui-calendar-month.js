@@ -36,32 +36,36 @@ export default {
       },
       selectedDate: {
         type: Number
-      }
+      },
+      scope: Object
     },
     methods: {
 
     },
+    computed: {
+        // 计算属性的 getter
+        days: function () {
+          return [31, isLeapYear(this.year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][this.month];
+        },
+        beforeDays: function () {
+         return getBeginDayOfMouth(this.year, parseInt(this.month) + 1);
+        }
+        
+    },
     data: function() {
-      let days = [31, isLeapYear(this.year) ? 29 : 28,
-        31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-      //本月从哪天开始
-      let beforeDays = getBeginDayOfMouth(this.year, parseInt(this.month) + 1);
-
       return {
-        days: days[this.month],
-        beforeDays: beforeDays
       }
     },
     template: 
     `
 <ul class="cm-calendar-bd ">
-  <h3  class="cm-month js_month">{{year + '-' + month}}</h3>
+  <h3  class="cm-month calendar-cm-month js_month">{{year + '-' + month}}</h3>
   <ul class="cm-day-list">
   <template v-for="n in beforeDays" >
     <li class="cm-item--disabled"></li>
   </template>
   <template v-for="num in days" >
-    <ui-calendar-day :selectedDate="selectedDate" :year="year" :month="month" v-bind:day="num" ></ui-calendar-day>
+    <ui-calendar-day :scope="scope" :selectedDate="selectedDate" :year="year" :month="month" v-bind:day="num" ></ui-calendar-day>
   </template>
   </ul>
 </ul>
