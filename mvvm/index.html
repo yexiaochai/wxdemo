@@ -1,0 +1,37 @@
+﻿<!doctype html>
+<html>
+<head>
+  <title>起步</title>
+</head>
+<body>
+
+<div id="app">
+
+</div>
+
+<script type="module" >
+
+  import MVVM from './libs/mvvm.js'
+
+  let html = `
+<div class="c-row search-line {{name}} {{age}}" style="font-size: 14px; margin-left: {{age + 'px'}} " data-name="{{name}}" data-flag="start" ontap="clickHandler">
+  <div class="c-span9 js-start search-line-txt">
+    {{name}}</div>
+    <span>{{age+1}}</span>
+    <input type="text" value="{{age}}">
+     <br>
+</div>
+  `
+
+  let vm = new MVVM({
+    el: '#app',
+    template: html,
+    data: {
+      name: '叶小钗',
+      age: 30
+    }
+  })
+
+</script>
+</body>
+</html>

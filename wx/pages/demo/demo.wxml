@@ -1,0 +1,4 @@
+<view class="c-row search-line" data-flag="start" ontap="clickHandler">
+  <view class="c-span9 js-start search-line-txt">
+    {{name}}</view>
+</view>

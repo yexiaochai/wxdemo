@@ -1,21 +1,25 @@
-<div className="cm-modal cm-modal--alert" style="z-index: {uiIndex}; display: {isShow}; ">
-  <div className="cm-modal-bd">
-    <block wx:if="{title}">
-      <div className="cm-alert-title">{title}</div>
-    </block>
-    <block wx:if="{message.length > 20}">
-      <div className="cm-mutil-lines">{message}</div>
-    </block>
-    <block wx:else>
-      <div>{message}</div>
-    </block>
-  </div>
-  <div className="cm-actions  { btns.length > 2 ? 'cm-actions--full' : '' }">
-    <block wx:for="{btns}" wx:key="{k}">
-      <text onclick="onBtnEvent" data-type="{item.type}" className="{item.type == 'ok' ? 'cm-btns-ok' : 'cm-btns-cancel'} cm-actions-btn">{item.name}</text>
-    </block>
+<div class="c-row search-line" data-flag="start" ontap="showCitylist">
+  <div class="c-span3">
+    出发{{sss}}</div>
+  <div class="c-span9 js-start search-line-txt">
+    {{cityStartName}}</div>
+</div>
+<div class="c-row search-line" data-flag="arrive" ontap="showCitylist">
+  <div class="c-span3">
+    到达</div>
+  <div class="c-span9 js-arrive search-line-txt">
+    {{cityArriveName}}</div>
+</div>
+<div class="c-row search-line" data-flag="arrive" ontap="showCalendar">
+  <div class="c-span3">
+    出发日期</div>
+  <div class="c-span9 js-arrive search-line-txt">
+    {{calendarSelectedDateStr}}</div>
+</div>
+<div class="c-row " data-flag="arrive">
 
-  </div>
+  <span class="btn-primary full-width js_search_list" ontap="goList" >查询</span>
 </div>
-<div className="cm-overlay" onclick="onMaskEvent" style="z-index: {maskzIndex}; display: {isShow}">
-</div>
+<include src="../mod/calendar.wxml" />
+<include src="../mod/city.wxml" />
+<include src="../../utils/abstract-page.wxml" />
