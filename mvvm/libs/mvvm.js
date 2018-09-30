@@ -2,6 +2,9 @@ import {initData } from './instance.js'
 import { query, idToTemplate } from './utils.js'
 import { compileToFunctions } from './parser.js'
 import { el } from './vnode.js'
+import Watcher from './watcher.js'
+import globalDataDep from './dep.js'
+
 
 //全局数据保证每个MVVM实例拥有唯一id
 let uid = 0;
@@ -21,10 +24,6 @@ let uid = 0;
     }
 
     this.$mount(options.el);
-
-    let _node = this._render().render();
-    this.$el.appendChild( _node)
-
   }
 
   //解析模板compileToFunctions,将之形成一个函数
@@ -60,9 +59,40 @@ let uid = 0;
       }
     }
 
+    var vm = this;
+    this._watcher = new Watcher(this,
+      function () {
+        vm._update(vm._render(), this._h);
+      });
+
     return this;
   }
 
+   setData(data) {
+     initData(this, Object.assign({}, this.$data, data));
+     globalDataDep.notify();
+   }
+
+   _update(vnode) {
+
+     //这里会对不新旧虚拟节点,会依赖snabbdom,我们这里先粗暴处理
+     const prevVnode = this._vnode
+     this._vnode = vnode;
+
+     //这里先不对比新老节点差异,直接执行渲染流程
+     let flag = document.createDocumentFragment();
+     flag.appendChild(this.$el.firstChild);
+     this.$el.appendChild( vnode.render());
+
+     return;
+
+     if(!prevVnode) {
+
+     } else {
+
+     }
+
+   }
   _render() {
     let render = this.$options.render
     let vnode

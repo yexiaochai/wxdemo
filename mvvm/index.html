@@ -14,7 +14,7 @@
   import MVVM from './libs/mvvm.js'
 
   let html = `
-<div class="c-row search-line {{name}} {{age}}" style="font-size: 14px; margin-left: {{age + 'px'}} " data-name="{{name}}" data-flag="start" ontap="clickHandler">
+<div class="c-row search-line {{name}} {{age}}" style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} " data-name="{{name}}" data-flag="start" ontap="clickHandler">
   <div class="c-span9 js-start search-line-txt">
     {{name}}</div>
     <span>{{age+1}}</span>
@@ -31,6 +31,8 @@
       age: 30
     }
   })
+
+  window.vm = vm;
 
 </script>
 </body>
