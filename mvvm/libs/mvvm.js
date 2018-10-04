@@ -1,10 +1,10 @@
 import {initData } from './instance.js'
 import { query, idToTemplate } from './utils.js'
 import { compileToFunctions } from './parser.js'
-import { el } from './vnode.js'
+import { el } from './vnode1.js'
 import Watcher from './watcher.js'
 import globalDataDep from './dep.js'
-
+import { patch, h, VNode } from './vnode.js'
 
 //全局数据保证每个MVVM实例拥有唯一id
 let uid = 0;
