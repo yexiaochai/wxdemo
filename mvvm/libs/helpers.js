@@ -19,3 +19,21 @@ export function makeFunction(code) {
     return function (){};
   }
 }
+
+//解析指令，这里完成第一步解析出click事件即可
+export function setElDrictive(el, attrs) {
+  for(let i = 0, l = attrs.length; i < l; i++) {
+    let name = attrs[i].name;
+
+    //这里只判断ontap即可,其余指令不予理睬
+    if(name === 'ontap') {
+      el['on'] = {
+        name: 'on',
+        arg: 'ontap',
+        expression: 'ontap'
+      }
+    }
+
+  }
+
+}

@@ -106,7 +106,7 @@ let uid = 0;
   }
 
   _h(tag, data, children) {
-    return el(tag, data, children)
+    return el(tag, data, children, this.$vnode)
   }
 
   _s(val) {

@@ -14,8 +14,9 @@
   import MVVM from './libs/mvvm.js'
 
   let html = `
-<div class="c-row search-line {{name}} {{age}}" style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} " data-name="{{name}}" data-flag="start" ontap="clickHandler">
-  <div class="c-span9 js-start search-line-txt">
+<div class="c-row search-line {{name}} {{age}}" ontap="ontap"
+style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} " data-name="{{name}}" data-flag="start" >
+  <div class="c-span9 js-start search-line-txt" >
     {{name}}</div>
     <span>{{age+1}}</span>
     <input type="text" value="{{age}}">
@@ -29,6 +30,13 @@
     data: {
       name: '叶小钗',
       age: 30
+    },
+    methods: {
+      ontap: function(e) {
+        this.setData({
+          age: this.age + 1
+        });
+      }
     }
   })
 

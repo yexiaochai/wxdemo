@@ -29,7 +29,7 @@ export default function codeGen(ast) {
   //解析成h render字符串形式
   const code = ast ? genElement(ast) : '_h("div")'
   //把render函数，包起来，使其在当前作用域内
-  return makeFunction(`with(this){ return ${code}}`)
+  return makeFunction(`with(this){  return ${code}}`)
 }
 
 function genElement(el) {

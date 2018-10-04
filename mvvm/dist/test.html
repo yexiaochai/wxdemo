@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="MVVM.js"></script></head>
+
+<body>
+  <div id="to">
+
+  </div>
+
+  <script id="app" type="text/html">
+    <div>
+      <h2>绑定</h2>
+      <input value="{{obj}}">
+      <div>{{title}}</div>
+      <br>
+      <hr>
+      <h2>计算属性</h2>
+      <div>{{title2}}</div>
+      <br>
+      <hr>
+      <h2>m-model</h2>
+      <input m-model="arr[0]">
+      <div>{{arr}}</div>
+      <br>
+      <hr>
+      <h2>m-click</h2>
+      <div m-on:click="test">点击触发</div>
+      <br>
+      <hr>
+      <h2>m-if</h2>
+      <h1 m-if="show">显示{{title}}</h1>
+      <button m-on:click="toggle">点击显示/隐藏</button>
+      <br>
+      <hr>
+      <h2>m-for</h2>
+      <ul>
+        <li m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</li>
+      </ul>
+      <br>
+      <hr>
+      <h2>子组件</h2>
+      <c m-if="cshow" arr></c>
+      <br>
+      <button m-on:click="togglec">点击摧毁/生成子组件</button>
+    </div>
+  </script>
+  <script>
+
+    let html = `
+    <div class="c-row search-line {{name}} {{age}}" style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} "
+    data-name="{{name}}" data-flag="start" m-on:click="ontap">
+            <div class="c-span9 js-start search-line-txt" >
+            {{name}}</div>
+    <span>{{age+1}}</span>
+    <input type="text" value="{{age}}">
+            <br>
+            </div>
+    `
+
+    let vm = new MVVM({
+      el: '#app',
+      template: html,
+      data: {
+        name: '叶小钗',
+        age: 30
+      },
+      methods: {
+        ontap: function(e) {
+          this.age++
+        }
+      }
+    })
+
+    window.vm = vm;
+
+  </script
+</body>

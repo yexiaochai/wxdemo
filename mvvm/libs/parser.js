@@ -3,7 +3,7 @@ import TextParser from './text-parser.js'
 import codeGen   from './codegen.js'
 
 import { makeAttrsMap } from './utils.js'
-import { setElAttrs } from './helpers.js'
+import { setElAttrs, setElDrictive } from './helpers.js'
 
 
 //******核心中的核心
@@ -27,9 +27,10 @@ export function compileToFunctions(template, vm) {
         attrsMap: makeAttrsMap(attrs), //将属性数组转换为对象
         parent: currentParent,
         children: [],
+        events: {},
 
         //下面这些属性先不予关注,因为底层函数没有做校验,不传要报错
-        events: {},
+
         style: null,
         klass: null,
         hook: {},
@@ -37,6 +38,15 @@ export function compileToFunctions(template, vm) {
         attrs: {}//值为true,false则移除该属性
 
       };
+
+      //解析指令
+      //这里第一步完成事件绑定的处理即可,我们这里依然以小程序的事件为主,这里只做tap事件处理
+      setElDrictive(element, attrs);
+
+      if(element.on) {
+        element.events['click'] = '"' + element.on.expression + '"';
+      }
+
 
       //处理属性
       setElAttrs(element, vm.$options.delimiters);

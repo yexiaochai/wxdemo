@@ -4,42 +4,30 @@
 
 //***虚拟dom部分代码,后续会换成snabdom
 class Element {
-  constructor(tagName, props, children) {
+  constructor(tagName, props, children, vm) {
     this.tagName = tagName;
     this.props = props;
     this.children = children || [];
+    this.vm = vm.vm;
   }
   render() {
     //拿着根节点往下面撸
     let el = document.createElement(this.tagName);
     let props = this.props.props;
-    let attrs = this.props.attrs;
-    let style = this.props.style;
-    let klass = this.props.klass;
+    let scope = this;
 
-    let s = '';
+    let events = this.props.on;
 
     for(let name in props) {
       el.setAttribute(name, props[name]);
     }
 
-    for(name in attrs) {
-      el.setAttribute(name, attrs[name]);
-    }
-
-    for(name in style) {
-      s += name + ': ' + style[name] + ';';
-    }
-    if(s) {
-      el.setAttribute('style', s);
-    }
-    s = '';
-
-    for(name in klass) {
-      s += name + ': ' + style[name] + ';';
-    }
-    if(s) {
-      el.setAttribute('class', s);
+    for(name in events) {
+      let type = Object.keys(this.props.on);
+      type = type[0];
+      el.addEventListener(type, function (e) {
+        scope.vm.$options.methods[scope.props.on[type]] && scope.vm.$options.methods[scope.props.on[type]].call(scope.vm, e);
+      })
     }
 
     let children = this.children;
@@ -59,6 +47,6 @@ class Element {
   }
 }
 
-export function el(tagName, props, children)  {
-  return new Element(tagName, props, children)
+export function el(tagName, props, children, vm)  {
+  return new Element(tagName, props, children, vm)
 }
