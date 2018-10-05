@@ -30,12 +30,23 @@ export default function codeGen(ast) {
   const code = ast ? genElement(ast) : '_h("div")'
   //把render函数，包起来，使其在当前作用域内
 
-  //return makeFunction(`with(this){ debugger;  return ${code}}`)
+  return makeFunction(`with(this){ debugger;  return ${code}}`)
 
-  return makeFunction(`with(this){ return ${code}}`)
+  //return makeFunction(`with(this){ return ${code}}`)
 }
 
 function genElement(el) {
+  //指令阶段
+  var hooks = el.vm.hooks;
+  if (!el.processed) {
+    el.processed = true;
+    for (var hkey in hooks) {
+      var hook;
+      if (el[hkey] && (hook = hooks[hkey].vnode2render)) {
+        return hook(el, genElement);
+      }
+    }
+  }
   //无指令
   return nodir(el)
 }

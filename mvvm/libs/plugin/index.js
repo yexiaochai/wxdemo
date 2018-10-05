@@ -1,5 +1,6 @@
 
 import { directiveOn } from './on.js'
+import { directiveFor } from './for.js'
 
 export const directive = {
   install: function (MVVM) {
@@ -12,6 +13,7 @@ export const directive = {
     };
 
     MVVM.directive('on', directiveOn);
+    MVVM.directive('for', directiveFor);
 
   }
 }

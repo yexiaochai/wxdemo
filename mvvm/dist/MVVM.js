@@ -3237,7 +3237,10 @@
             //解析成h render字符串形式
             var code = ast ? genElement(ast) : '_h("div")';
             //把render函数，包起来，使其在当前作用域内
-            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__helpers__["e" /* makeFunction */])('with(this){  return ' + code + '}');
+            return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__helpers__["e" /* makeFunction */])('with(this){ debugger;  return ' + code + '}');
+
+            //return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__helpers__["e" /* makeFunction */])('with(this){ return ' + code + '}');
+
         }
 
         function genElement(el) {

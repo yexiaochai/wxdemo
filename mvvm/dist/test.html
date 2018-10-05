@@ -60,12 +60,21 @@
             </div>
     `
 
+    html = `
+    <ul>
+      <li m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</li>
+    </ul>
+    `
+
     let vm = new MVVM({
       el: '#app',
       template: html,
       data: {
         name: '叶小钗',
-        age: 30
+        age: 30,
+        arr: [
+                '叶小钗', '素还真', '一页书'
+        ]
       },
       methods: {
         ontap: function(e) {

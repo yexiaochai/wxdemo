@@ -1,6 +1,10 @@
 //el操作相关集合
 import TextParser from './text-parser.js'
 
+
+export const drictiveRE = /^m\-(\w+)(\:[^\.]+)?\.?([^\:]+)?/
+
+
 //导出属性
 export function setElAttrs(el, delimiters) {
   var s = delimiters[0], e = delimiters[1];
@@ -34,5 +38,29 @@ export function setElDrictive(el, attrs) {
         expression: attrs[i].value
       }
     }
+
+    //其他事件处理
+    let darr = name.match(drictiveRE);
+    if (darr) {
+      //removeAttr(el, name)
+      el[darr[1]] = {
+        name: darr[1],
+        expression: attrs[i].value,
+        modifiers: split(darr[3]),
+        arg: darr[2] && darr[2].slice(1)
+      }
+    }
+
+  }
+
+  function split(modifiers) {
+    var map = {};
+    var mod = modifiers && modifiers.split('.');
+    if (mod) {
+      mod.split('.').forEach(function (item, i) {
+        map[item] = true;
+      });
+    }
+    return map;
   }
 }
