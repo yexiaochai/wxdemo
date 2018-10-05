@@ -12,6 +12,7 @@ export function compileToFunctions(template, vm) {
   let currentParent;
   let options = vm.$options;
   let stack = [];
+  let hooks = vm.hooks;
 
   //这段代码昨天做过解释,这里属性参数比昨天多一些
   HTMLParser(template, {
@@ -43,12 +44,19 @@ export function compileToFunctions(template, vm) {
       //这里第一步完成事件绑定的处理即可,我们这里依然以小程序的事件为主,这里只做tap事件处理
       setElDrictive(element, attrs);
 
-      if(element.on) {
-        element.events['click'] = '"' + element.on.expression + '"';
+      for (var hkey in hooks) {
+        var hook;
+        if (element[hkey] && (hook = hooks[hkey].template2Vnode)) {
+          hook(element, element[hkey], vm);
+        }
       }
 
+      //if(element.on) {
+      //  element.events['click'] = '"' + element.on.expression + '"';
+      //}
 
-      //处理属性
+
+      //处理属性,我们这里无视样式以及class
       setElAttrs(element, vm.$options.delimiters);
 
       if(!root) {

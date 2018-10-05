@@ -8,7 +8,8 @@ export function setElAttrs(el, delimiters) {
   var attrs = el.attrsMap;
   for (let key in attrs) {
     let value = attrs[key];
-    el.props[key] = TextParser(value, delimiters) ||  "'" + value + "'";
+    //el.props[key] = TextParser(value, delimiters) ||  "'" + value + "'";
+    el.attrs[key] = TextParser(value, delimiters) ||  "'" + value + "'";
   }
 }
 
@@ -29,11 +30,9 @@ export function setElDrictive(el, attrs) {
     if(name === 'ontap') {
       el['on'] = {
         name: 'on',
-        arg: 'ontap',
-        expression: 'ontap'
+        arg: 'click', //现在定义ontap就是click
+        expression: attrs[i].value
       }
     }
-
   }
-
 }

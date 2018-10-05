@@ -3,8 +3,6 @@ import globalDataDep from './dep.js'
 
 //订阅者(观察者)
 
-
-
 let uid = 0;
 
 //观察者,在解析模板到data与node映射时期出现

@@ -1,6 +1,6 @@
 
 //实例要用到的方法集合在此
-import { isFunction } from './utils.js'
+import { isFunction, noop, bind } from './utils.js'
 
 
 
@@ -10,13 +10,19 @@ export function initData(vm, data) {
   if (isFunction(data)) {
     data = data()
   }
-
   //这里将data上的数据移植到this上,后面要监控
   for(let key in data) {
-
     //这里有可能会把自身方法覆盖,所以自身的属性方法需要+$
     vm[key] = data[key];
   }
 
   vm.$data = data;
+}
+
+//将传入参数的方法挂到对象上,这里感觉又可能发生覆盖
+export function initMethods(vm, methods) {
+  //遍历到原型链属性
+  for (const key in methods) {
+    vm[key] = methods[key] == null ? noop : bind(methods[key], vm)
+  }
 }

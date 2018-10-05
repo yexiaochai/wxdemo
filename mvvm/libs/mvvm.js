@@ -1,10 +1,10 @@
-import {initData } from './instance.js'
+import {initData, initMethods } from './instance.js'
 import { query, idToTemplate } from './utils.js'
 import { compileToFunctions } from './parser.js'
-import { el } from './vnode1.js'
 import Watcher from './watcher.js'
 import globalDataDep from './dep.js'
 import { patch, h, VNode } from './vnode.js'
+import { directive } from './plugin/index.js'
 
 //全局数据保证每个MVVM实例拥有唯一id
 let uid = 0;
@@ -23,8 +23,16 @@ let uid = 0;
       initData(this, options.data);
     }
 
+    if(options.methods) {
+      initMethods(this, options.methods);
+    }
+
     this.$mount(options.el);
   }
+   //动态插入
+   static use(plugin) {
+     plugin && plugin.install && plugin.install.call(this, MVVM);
+   }
 
   //解析模板compileToFunctions,将之形成一个函数
   //很多网上的解释是将实例挂载到dom上,这里有些没明白,我们后面点再看看
@@ -80,16 +88,10 @@ let uid = 0;
      this._vnode = vnode;
 
      //这里先不对比新老节点差异,直接执行渲染流程
-     let flag = document.createDocumentFragment();
-     flag.appendChild(this.$el.firstChild);
-     this.$el.appendChild( vnode.render());
-
-     return;
-
-     if(!prevVnode) {
-
+     if (!prevVnode) {
+       this.$el = patch(this.$el, vnode)
      } else {
-
+       this.$el = patch(prevVnode, vnode)
      }
 
    }
@@ -104,9 +106,37 @@ let uid = 0;
     }
     return vnode
   }
-
   _h(tag, data, children) {
-    return el(tag, data, children, this.$vnode)
+    data = data || {}
+    //没有attr时,child顶上
+    if (Array.isArray(data)) {
+      children = data
+      data = {}
+    }
+
+    data.hook = data.hook || {}
+
+    if (this.$options.destroy) {
+      data.hook.destroy = bind(this.$options.destroy, this)
+    }
+
+    if (Array.isArray(children)) {
+      let faltChildren = []
+
+      children.forEach((item) => {
+        if (Array.isArray(item)) {
+        faltChildren = faltChildren.concat(item)
+      } else {
+        faltChildren.push(item)
+      }
+    })
+
+      children = faltChildren.length ? faltChildren : children
+    }
+
+    let _vnode = h(tag, data, children)
+
+    return _vnode;
   }
 
   _s(val) {
@@ -118,5 +148,9 @@ let uid = 0;
   }
 
 }
+
+//添加指令特性
+MVVM.use(directive)
+
 
 export default MVVM;

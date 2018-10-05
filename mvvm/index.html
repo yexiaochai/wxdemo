@@ -14,7 +14,7 @@
   import MVVM from './libs/mvvm.js'
 
   let html = `
-<div class="c-row search-line {{name}} {{age}}" ontap="ontap"
+<div class="c-row search-line {{name}} {{age}}" ontap="onclick"
 style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} " data-name="{{name}}" data-flag="start" >
   <div class="c-span9 js-start search-line-txt" >
     {{name}}</div>
@@ -23,6 +23,11 @@ style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} 
      <br>
 </div>
   `
+//  html = `
+//<div class="c-row search-line {{name}} {{age}}" ontap="onclick"
+//style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} " data-name="{{name}}" data-flag="start" >
+//</div>
+//  `
 
   let vm = new MVVM({
     el: '#app',
@@ -32,7 +37,7 @@ style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} 
       age: 30
     },
     methods: {
-      ontap: function(e) {
+      onclick: function(e) {
         this.setData({
           age: this.age + 1
         });
