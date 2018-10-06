@@ -1,0 +1,316 @@
+﻿<!doctype html>
+<html>
+<head>
+  <title>指令系统演示</title>
+</head>
+<body>
+
+<script type="module">
+
+  //需要处理的模板,我们需要将他转换为虚拟dom vnode
+  let html = `
+  <ul>
+    <li m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</li>
+  </ul>
+  `
+  //这里我们为了降低学习成本将这段模板再做一次简化,变成这样
+  html = '<div m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</div>';
+
+
+  //处理element元素生成render函数
+  function genElement(el) {
+    //这里如果有自定义指令也会被拿出来
+    if (!el.processed) {
+      //如果没有这个指令会递归调用
+      el.processed = true;
+      let hooks = el.vm.hooks;
+      for (let hkey in hooks) {
+        if (el[hkey] && hooks[hkey].vnode2render) {
+          return hooks[hkey].vnode2render(el, genElement);
+        }
+      }
+    }
+    //不带hook的情况,这个就是普通的标签
+    return nodir(el)
+  }
+
+  function nodir(el) {
+    let code
+
+    //转换子节点
+    const children = genChildren(el, true);
+    code = `_h('${el.tag}'${
+       ',{}'
+      }${
+          children ? `,${children}` : '' // children
+    })`
+    return code
+  }
+
+  function genChildren(el, checkSkip) {
+    const children = el.children
+    if (children.length) {
+        const el = children[0]
+        // 如果是v-for
+        if (children.length === 1 && el.for) {
+          return genElement(el)
+        }
+        const normalizationType = 0
+        return `[${children.map(genNode).join(',')}]${
+              checkSkip
+                  ? normalizationType ? `,${normalizationType}` : ''
+      : ''
+      }`
+    }
+  }
+
+
+  //将element转换为render函数
+  function compileToFunctions(el) {
+    let vm = el.vm;
+    let render = genElement(el);
+
+    render = `with(this){ debugger; return ${render}}`;
+
+    return new Function(render);
+
+  }
+
+  function genNode(node) {
+    if (node.type === 1) {
+      return genElement(node)
+    } else {
+      return genText(node)
+    }
+  }
+
+  function genText(text) {
+    return text.type === 2 ? text.expression : JSON.stringify(text.text)
+  }
+
+  //我们依旧定义个MVVM的类
+  class MVVM {
+    constructor(options) {
+      this.$data = options.data;
+      this.template = options.template;
+
+      //将data中的数据装填到实例上,以便后续函数组装使用
+      for(let name in this.$data) {
+        this[name] = this.$data[name];
+      }
+
+      this.compile();
+
+    }
+
+    //解析模板生成虚拟dom,这里是重要的一步将模板变成方法
+    compile() {
+
+      let element = this.html2Elment();
+      this.element = element;
+
+      this.initHooks();
+      this.setElDrictive(element);
+      //因为设置属性已经被我们手动做了这里便不需要处理了
+
+      let hooks = this.hooks;
+      //这里,我们需要将有的钩子执行,主要是为了处理指令
+      for(let hkey in hooks) {
+        //如果对象上面已经装载了这个指令,并且具有模板到node的函数定义则执行
+        //这里之所以需要模板上具有,因为对象数据需要在这里取
+        if(element[hkey] && hooks[hkey].template2Vnode) {
+          //调用这个钩子,事实上这个钩子要往对象实例上面加东西
+          //这个会将循环相关的指令,比如要循环的对象放到for字段,将值放到alias,将迭代器属性关键词放到iterator
+          hooks[hkey].template2Vnode(element, element[hkey], this);
+        }
+      }
+
+      //上面做了指令系统第一步,将模板中的属性存到element对应对象上,这里开始调用之
+      this.$render = compileToFunctions(element)
+
+      //执行渲染
+      let vnode = this.$render();
+
+      console.log(html, element, vnode)
+      debugger;
+
+    }
+
+
+    initHooks() {
+      //需要处理的指令钩子,本来该放到prototype上
+      this.hooks = {
+        'for': {
+          template2Vnode: function (el, dir) {
+            //(val, key, index) in arr
+            let exp = dir.expression
+
+            //for in 或者 for of 这种循环
+            const forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/
+            //取出迭代器关键词
+            const forIteratorRE = /\((\{[^}]*\}|[^,]*),([^,]*)(?:,([^,]*))?\)/
+
+            //获取数组
+            //(key ,index) in arr
+            //[0] (key ,index) in arr,[1] (key ,index),[2] arr
+            const inMatch = exp.match(forAliasRE)
+            if (!inMatch) {
+              warn(`Invalid v-for expression: ${exp}`)
+              return
+            }
+
+            //上面的正则其实是为了取出迭代器中的字符串,后面好组装函数
+            //这里开始重新组装对象上的for指令,这里把循环的对象指向了数组关键词
+            el.for = inMatch[2].trim()
+            //(val, key, index)
+            let alias = inMatch[1].trim()
+
+            //关键词拿出来
+            const iteratorMatch = alias.match(forIteratorRE)
+            if (iteratorMatch) {
+              el.alias = iteratorMatch[1].trim();
+              el.iterator1 = iteratorMatch[2].trim()
+              if (iteratorMatch[3]) {
+                el.iterator2 = iteratorMatch[3].trim()
+              }
+            } else {
+              el.alias = alias
+            }
+
+          },
+          //将node对象转换为函数
+          //因为之前已经用上面的函数
+          //将循环相关的指令,比如要循环的对象放到for字段,将值放到alias,将迭代器属性关键词放到iterator
+          //所以这里直接取出关键词使用即可
+          vnode2render: function (el, genElement) {
+            //一个状态机
+            if(el.forProcessed) return null;
+
+            //取出相关属性
+            let exp = el.for;
+            let alias = el.alias;
+
+            //注意这个字符串里面的代码会执行,最新js语法
+            let iterator1 = el.iterator1 ? `,${el.iterator1}` : '';
+            let iterator2 = el.iterator2 ? `,${el.iterator2}` : '';
+
+            /*
+            输出
+             _l((arr), function(val,key,index) {
+                console.log(arguments);
+             })
+             */
+            let _render = ` _l((${exp}), function(${alias}${iterator1}${iterator2}) {
+                console.log(arguments);
+                return ${genElement(el)}
+              })
+            `
+            console.log('render', _render);
+
+            return _render
+
+          }
+        }
+      };
+    }
+
+    //渲染for时,返回多个render
+    //因为_l调用的时候是处在mvvm实例作用域,所以这里传入的时候是一个数组
+    _l(val, render) {
+      let ret, i, l, keys, key
+      if (Array.isArray(val) || typeof val === 'string') {
+        ret = new Array(val.length)
+        for (i = 0, l = val.length; i < l; i++) {
+          ret[i] = render(val[i], i)
+        }
+      } else if (typeof val === 'number') {
+        ret = new Array(val)
+        for (i = 0; i < val; i++) {
+          ret[i] = render(i + 1, i)
+        }
+      } else if (isObject(val)) {
+        keys = Object.keys(val)
+        ret = new Array(keys.length)
+        for (i = 0, l = keys.length; i < l; i++) {
+          key = keys[i]
+          ret[i] = render(val[key], key, i)
+        }
+      }
+      return ret
+    }
+
+    _s(val) {
+      return val == null
+              ? ''
+              : typeof val === 'object'
+              ? JSON.stringify(val, null, 2)
+              : String(val)
+    }
+
+    _h(sel, data, children) {
+
+      debugger;
+
+      return
+    }
+
+    //解析指令
+    setElDrictive(el) {
+      //解析指令,这里主要是解析for与if
+      let attrs = el.attrs;
+
+      //判断m-xxx这种类型的正则
+      const drictiveRE = /^m\-(\w+)(\:[^\.]+)?\.?([^\:]+)?/
+
+      for(let name in attrs) {
+        let darr = name.match(drictiveRE);
+        if(darr){
+
+          //没有什么其他目的,就是将属性中的指令挪到对象上
+          el[darr[1]] = {
+            name: darr[1],
+            expression: attrs[name],
+            arg: darr[2] && darr[2].slice(1)
+          }
+
+        }
+      }
+
+    }
+
+    //将模板转换为js对象,这里要调用HTMLParser
+    html2Elment() {
+      //我们这里简化代码,直接返回解析后的结果即可
+      //...一大段调用htmlParser,包括递归调用生成js对象的过程,略
+      return {
+        vm: this,
+        tag: 'div',
+        attrs: {
+          'm-for': '(val, key, index) in arr'
+        },
+        children: [
+          {
+            type: 2,
+            text: '索引 {{key + 1}} ：{{val}}',
+            expression: '"索引 "+_s(key + 1)+" ："+_s(val)'
+          }
+        ]
+      }
+
+    }
+
+  }
+
+  //然后我们在这里实例化即可
+  new MVVM({
+    template: html,
+    data: {
+      arr: [
+        '叶小钗', '素还真', '一页书'
+      ]
+    }
+  })
+
+</script>
+</body>
+</html>
