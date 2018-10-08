@@ -153,53 +153,53 @@ let uid = 0;
     }
 
 
-    if (typeof tag == 'string') {
-      let Ctor = resolveAsset(this.$options, 'components', tag)
-      if (Ctor) {
-        return this._createComponent(Ctor, data, children, tag)
-      }
-    }
+if (typeof tag == 'string') {
+  let Ctor = resolveAsset(this.$options, 'components', tag)
+  if (Ctor) {
+    return this._createComponent(Ctor, data, children, tag)
+  }
+}
 
     let _vnode = h(tag, data, children)
 
     return _vnode;
   }
 
-   //创建组件
-   //子组件option,属性,子元素,tag
-   _createComponent(Ctor, data, children, sel) {
-     Ctor.data = mergeOptions(Ctor.data);
-     let componentVm;
-     let Factory = this.constructor
-     let parentData = this.$data
-     data.hook.insert = (vnode) => {
-       Ctor.data = Ctor.data || {};
-       var el =createElement('sel')
-       vnode.elm.append(el)
-       Ctor.el = el;
-       componentVm = new Factory(Ctor);
-       vnode.key = componentVm.uid;
-       componentVm._isComponent = true
-       componentVm.$parent = this;
-       (this.$children || (this.$children = [])).push(componentVm);
-       //写在调用父组件值
-       for (let key in data.attrs) {
-         if (Ctor.data[key]) {
-           warn(`data:${key},已存在`);
-           continue;
-         }
-         Object.defineProperty(componentVm, key, {
-           configurable: true,
-           enumerable: true,
-           get: function proxyGetter() {
-             return parentData[key]
-           }
-         })
-       }
+//创建组件
+//子组件option,属性,子元素,tag
+_createComponent(Ctor, data, children, sel) {
+ Ctor.data = mergeOptions(Ctor.data);
+ let componentVm;
+ let Factory = this.constructor
+ let parentData = this.$data
+ data.hook.insert = (vnode) => {
+   Ctor.data = Ctor.data || {};
+
+    //将数据传递下来
+    for(let i in Ctor.props) {
+      let key = Ctor.props[i]
+      Ctor.data[key] = data.attrs[key];
+    }
+
+   var el =createElement('sel')
+   vnode.elm.append(el)
+   Ctor.el = el;
+   componentVm = new Factory(Ctor);
+   vnode.key = componentVm.uid;
+   componentVm._isComponent = true
+   componentVm.$parent = this;
+   (this.$children || (this.$children = [])).push(componentVm);
+   //写在调用父组件值
+   for (let key in data.attrs) {
+     if (Ctor.data[key]) {
+       warn(`data:${key},已存在`);
+       continue;
      }
-     Ctor._vnode = new VNode(sel,null,data, [], undefined, createElement(sel));
-     return Ctor._vnode
    }
+ }
+ Ctor._vnode = new VNode(sel,null,data, [], undefined, createElement(sel));
+ return Ctor._vnode
+}
 
 
   _s(val) {

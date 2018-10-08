@@ -30,8 +30,8 @@ style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} 
 //</div>
 //  `
   html = `
-    <div>
-      <my-component></my-component>
+    <div ontap="onclick">
+      <my-component name="{{name}}"></my-component>
       <div m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</div>
     </div>
     `
@@ -40,8 +40,8 @@ style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} 
     template: html,
     components: {
       'my-component': {
-//        props: ['name'],
-        template: '<div>children component!</div>'
+        props: ['name'],
+        template: '<div>{{name}}-children component!</div>'
       }
     },
     data: {
@@ -54,6 +54,7 @@ style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} 
     methods: {
       onclick: function(e) {
         this.setData({
+          name: '素还真',
           age: this.age + 1
         });
       }

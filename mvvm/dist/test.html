@@ -62,7 +62,7 @@
 
     html = `
     <ul>
-      <my-component name="ddd"></my-component>
+      <my-component name1="ddd"></my-component>
       <li m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</li>
     </ul>
     `
@@ -79,8 +79,8 @@
       },
       components: {
         'my-component': {
-          props: ['name'],
-          template: '<div>{{name}}-children component!</div>'
+          props: ['name1'],
+          template: '<div>-children component!</div>'
         }
       },
       methods: {

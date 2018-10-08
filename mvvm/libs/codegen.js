@@ -30,9 +30,9 @@ export default function codeGen(ast) {
   const code = ast ? genElement(ast) : '_h("div")'
   //把render函数，包起来，使其在当前作用域内
 
-  return makeFunction(`with(this){ debugger;  return ${code}}`)
+  //return makeFunction(`with(this){ debugger;  return ${code}}`)
 
-  //return makeFunction(`with(this){ return ${code}}`)
+  return makeFunction(`with(this){ return ${code}}`)
 }
 
 function genElement(el) {
