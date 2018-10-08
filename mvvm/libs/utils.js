@@ -37,6 +37,23 @@ export function makeAttrsMap(attrs, delimiters) {
   return map;
 }
 
+//匹配组件名称的各种规则
+export function resolveAsset(options, type, id) {
+  /* istanbul ignore if */
+  if (typeof id !== 'string') {
+    return
+  }
+  let assets = options[type]
+  if (!assets) {
+    return
+  }
+  if (hasOwn(assets, id)) { return assets[id] }
+}
+
+export function hasOwn(obj, key) {
+  return hasOwnProperty.call(obj, key)
+}
+
 export function noop() { }
 
 export function bind(fn, ctx) {

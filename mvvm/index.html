@@ -30,13 +30,20 @@ style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} 
 //</div>
 //  `
   html = `
-    <ul>
-      <li m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</li>
-    </ul>
+    <div>
+      <my-component></my-component>
+      <div m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</div>
+    </div>
     `
   let vm = new MVVM({
     el: '#app',
     template: html,
+    components: {
+      'my-component': {
+//        props: ['name'],
+        template: '<div>children component!</div>'
+      }
+    },
     data: {
       name: '叶小钗',
       age: 30,

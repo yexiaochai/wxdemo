@@ -62,6 +62,7 @@
 
     html = `
     <ul>
+      <my-component name="ddd"></my-component>
       <li m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</li>
     </ul>
     `
@@ -75,6 +76,12 @@
         arr: [
                 '叶小钗', '素还真', '一页书'
         ]
+      },
+      components: {
+        'my-component': {
+          props: ['name'],
+          template: '<div>{{name}}-children component!</div>'
+        }
       },
       methods: {
         ontap: function(e) {

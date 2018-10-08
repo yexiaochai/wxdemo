@@ -1,10 +1,14 @@
 import {initData, initMethods } from './instance.js'
-import { query, idToTemplate } from './utils.js'
+import { query, idToTemplate, resolveAsset} from './utils.js'
 import { compileToFunctions } from './parser.js'
 import Watcher from './watcher.js'
 import globalDataDep from './dep.js'
 import { patch, h, VNode } from './vnode.js'
 import { directive } from './plugin/index.js'
+
+function  warn (str) {
+  console.log(str);
+}
 
 //全局数据保证每个MVVM实例拥有唯一id
 let uid = 0;
@@ -71,7 +75,14 @@ let uid = 0;
     this._watcher = new Watcher(this,
       function () {
         vm._update(vm._render(), this._h);
+      },
+      function updateComponent() {
+        vm._update(vm._render(), this._h);
       });
+
+    if (!this._vnode) {
+      this._isMounted = true
+    }
 
     return this;
   }
@@ -82,6 +93,9 @@ let uid = 0;
    }
 
    _update(vnode) {
+     if (this._isMounted) {
+       callHook(this, 'beforeUpdate')
+     }
 
      //这里会对不新旧虚拟节点,会依赖snabbdom,我们这里先粗暴处理
      const prevVnode = this._vnode
@@ -92,6 +106,10 @@ let uid = 0;
        this.$el = patch(this.$el, vnode)
      } else {
        this.$el = patch(prevVnode, vnode)
+     }
+
+     if (this._isMounted) {
+       callHook(this, 'updated')
      }
 
    }
@@ -134,10 +152,55 @@ let uid = 0;
       children = faltChildren.length ? faltChildren : children
     }
 
+
+    if (typeof tag == 'string') {
+      let Ctor = resolveAsset(this.$options, 'components', tag)
+      if (Ctor) {
+        return this._createComponent(Ctor, data, children, tag)
+      }
+    }
+
     let _vnode = h(tag, data, children)
 
     return _vnode;
   }
+
+   //创建组件
+   //子组件option,属性,子元素,tag
+   _createComponent(Ctor, data, children, sel) {
+     Ctor.data = mergeOptions(Ctor.data);
+     let componentVm;
+     let Factory = this.constructor
+     let parentData = this.$data
+     data.hook.insert = (vnode) => {
+       Ctor.data = Ctor.data || {};
+       var el =createElement('sel')
+       vnode.elm.append(el)
+       Ctor.el = el;
+       componentVm = new Factory(Ctor);
+       vnode.key = componentVm.uid;
+       componentVm._isComponent = true
+       componentVm.$parent = this;
+       (this.$children || (this.$children = [])).push(componentVm);
+       //写在调用父组件值
+       for (let key in data.attrs) {
+         if (Ctor.data[key]) {
+           warn(`data:${key},已存在`);
+           continue;
+         }
+         Object.defineProperty(componentVm, key, {
+           configurable: true,
+           enumerable: true,
+           get: function proxyGetter() {
+             return parentData[key]
+           }
+         })
+       }
+     }
+     Ctor._vnode = new VNode(sel,null,data, [], undefined, createElement(sel));
+     return Ctor._vnode
+   }
+
 
   _s(val) {
     return val == null
@@ -171,6 +234,20 @@ let uid = 0;
      return ret
    }
 
+}
+
+function createElement(tagName) {
+  return document.createElement(tagName);
+}
+
+//获取data 因为data有可能为
+function mergeOptions(options) {
+  let opt = Object.assign({}, options)
+  let data = opt.data
+  if (typeof data === 'function') {
+    opt.data = data()
+  }
+  return opt
 }
 
 //添加指令特性
