@@ -29,37 +29,37 @@ style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} 
 //style="font-size: 14px; margin-left: {{age + 'px'}}; margin-top: {{age + 'px'}} " data-name="{{name}}" data-flag="start" >
 //</div>
 //  `
-  html = `
-    <div ontap="onclick">
-      <my-component name="{{name}}"></my-component>
-      <div m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</div>
-    </div>
-    `
-  let vm = new MVVM({
-    el: '#app',
-    template: html,
-    components: {
-      'my-component': {
-        props: ['name'],
-        template: '<div>{{name}}-children component!</div>'
-      }
-    },
-    data: {
-      name: '叶小钗',
-      age: 30,
-      arr: [
-        '叶小钗', '素还真', '一页书'
-      ]
-    },
-    methods: {
-      onclick: function(e) {
-        this.setData({
-          name: '素还真',
-          age: this.age + 1
-        });
-      }
+html = `
+  <div ontap="onclick">
+    <my-component name="{{name}}"></my-component>
+    <div m-for="(val, key, index) in arr">索引 {{key + 1}} ：{{val}}</div>
+  </div>
+  `
+let vm = new MVVM({
+  el: '#app',
+  template: html,
+  components: {
+    'my-component': {
+      props: ['name'],
+      template: '<div>{{name}}-children component!</div>'
     }
-  })
+  },
+  data: {
+    name: '叶小钗',
+    age: 30,
+    arr: [
+      '叶小钗', '素还真', '一页书'
+    ]
+  },
+  methods: {
+    onclick: function(e) {
+      this.setData({
+        name: '素还真',
+        age: this.age + 1
+      });
+    }
+  }
+})
 
   window.vm = vm;
 

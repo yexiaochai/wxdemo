@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <input type="text" v-model="name">
+  {{name}}
+</div>
+
+<script type="text/javascript" >
+
+  function getElById(id) {
+    return document.getElementById(id);
+  }
+
+  //主体对象,存储所有的订阅者
+  function Dep () {
+    this.subs = [];
+  }
+
+  //通知所有订阅者数据变化
+  Dep.prototype.notify = function () {
+    for(let i = 0, l = this.subs.length; i < l; i++) {
+      this.subs[i].update();
+    }
+  }
+
+  //添加订阅者
+  Dep.prototype.addSub = function (sub) {
+    this.subs.push(sub);
+  }
+
+  let globalDataDep = new Dep();
+
+  //观察者,框架会接触data的每一个与node相关的属性,
+  //如果data没有与任何节点产生关联,则不予理睬
+  //实际的订阅者对象
+  //注意,只要一个数据对象对应了一个node对象就会生成一个订阅者,所以真实通知的时候应该需要做到通知到对应数据的dom,这里不予关注
+  function Watcher(vm, node, name) {
+    this.name = name;
+    this.node = node;
+    this.vm = vm;
+    if(node.nodeType === 1) {
+      this.node.value = this.vm.data[name];
+    } else if(node.nodeType === 3) {
+      this.node.nodeValue = this.vm.data[name] || '';
+    }
+    globalDataDep.addSub(this);
+
+  }
+
+  Watcher.prototype.update = function () {
+    if(this.node.nodeType === 1) {
+      this.node.value = this.vm.data[this.name ];
+    } else if(this.node.nodeType === 3) {
+      this.node.nodeValue = this.vm.data[this.name ] || '';
+    }
+  }
+
+  //这块代码仅做功能说明,不用当真
+  function compile(node, vm) {
+    let reg = /\{\{(.*)\}\}/;
+
+    //节点类型
+    if(node.nodeType === 1) {
+      let attrs = node.attributes;
+      //解析属性
+      for(let i = 0, l = attrs.length; i < l; i++) {
+        if(attrs[i].nodeName === 'v-model') {
+          let name = attrs[i].nodeValue;
+          if(node.value === vm.data[name]) break;
+
+//          node.value = vm.data[name] || '';
+          new Watcher(vm, node, name)
+
+          //此处不做太多判断,直接绑定事件
+          node.addEventListener('input', function (e) {
+            //赋值操作
+            let newObj = {};
+            newObj[name] = e.target.value;
+            vm.setData(newObj, true);
+          });
+
+          break;
+        }
+      }
+    } else if(node.nodeType === 3) {
+
+      if(reg.test(node.nodeValue)) {
+        let name = RegExp.$1; // 获取匹配到的name
+        name = name.trim();
+//          node.nodeValue = vm.data[name] || '';
+        new Watcher(vm, node, name)
+      }
+    }
+  }
+
+  //获取节点
+  function nodeToFragment(node, vm) {
+    let flag = document.createDocumentFragment();
+    let child;
+
+    while (child = node.firstChild) {
+      compile(child, vm);
+      flag.appendChild(child);
+    }
+
+    return flag;
+  }
+
+  function MVVM(options) {
+    this.data = options.data;
+    let el = getElById(options.el);
+    this.$dom = nodeToFragment(el, this)
+    this.$el = el.appendChild(this.$dom);
+
+//    this.$bindEvent();
+  }
+
+  MVVM.prototype.setData = function (data, noNotify) {
+    for(let k in data) {
+      this.data[k] = data[k];
+    }
+    //执行更新逻辑
+//    if(noNotify) return;
+    globalDataDep.notify();
+  }
+
+  let mvvm = new MVVM({
+    el: 'app',
+    data: {
+      name: '叶小钗'
+    }
+  })
+
+  setTimeout(function() {
+    mvvm.setData({name: '刀狂剑痴叶小钗'})
+  }, 3000)
+
+</script>
+</body>
+</html>
